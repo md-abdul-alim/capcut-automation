@@ -1,5 +1,9 @@
+# selenium 4
 import os
 from selenium import webdriver
+import json
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -8,49 +12,76 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 
-# os.environ['PATH'] += "/home/alim/Documents/capcut/"
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
-driver = webdriver.Chrome()
-driver.get("https://www.capcut.com/login")
+email="alim.abdul.5915@gmail.com"
+password="adminmilon"
 
-# driver.find_element('name', "signUsername").send_keys("alim.abdul.5915@gmail.com")
 
-try:
-	element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "signUsername")))
-	element.send_keys("alim.abdul.5915@gmail.com")
-except Exception as e:
-	print(e)
-wait = WebDriverWait(driver, 5)
-continue_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "lv-btn-primary")))
-continue_button.click()
-time.sleep(5)
-#-------------
-driver.find_element(By.CSS_SELECTOR, 'input[type="password"]').send_keys("adminmilon")
-time.sleep(3)
-#-------------
-sign_in_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "lv_sign_in_panel_wide-primary-button")))
-sign_in_button.click()
-time.sleep(15)
-#-------------
-wait = WebDriverWait(driver, 2)
-create_new_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "createNewButton--N83an")))
-create_new_button.click()
-time.sleep(2)
-#-------------
+def saveCookies(driver):
+    cookies = driver.get_cookies()
+
+    with open('cookies.json', 'w') as file:
+        json.dump(cookies, file)
+    print('New Cookies saved successfully')
+
+
+def loadCookies():
+    # Check if cookies file exists
+    if 'cookies.json' in os.listdir():
+
+        with open('cookies.json', 'r') as file:
+            cookies = json.load(file)
+
+        for cookie in cookies:
+            driver.add_cookie(cookie)
+    else:
+        print('No cookies file found')
+    
+    driver.refresh() # Refresh Browser after login
+
+
+loginURL = 'https://www.capcut.com/login'
+driver.get(loginURL)
+
+# Load old session into the browser
+loadCookies()
+
+if 'my-edit?enter_from=login' not in driver.current_url:
+    print('Please Login the the website')
+    # print('Press Enter after successful login ...')
+    # input('>: ')
+    try:
+    	WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "signUsername"))).send_keys(email)
+    except Exception as e:
+    	print(e)
+
+    wait = WebDriverWait(driver, 5)
+    continue_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "lv-btn-primary")))
+    continue_button.click()
+    time.sleep(5)
+    #-------------
+    driver.find_element(By.CSS_SELECTOR, 'input[type="password"]').send_keys(password)
+    time.sleep(3)
+    #-------------
+    sign_in_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "lv_sign_in_panel_wide-primary-button")))
+    sign_in_button.click()
+    time.sleep(15)
+
+    # After successful login save new session cookies ot json file
+    saveCookies(driver)
+
+else:
+    print('Previous session loaded')
+    
+
+driver.get("https://www.capcut.com/editor?enter_from=create_new&from_page=work_space&__action_from=my_draft&position=my_draft&scenario=tiktok_ads&scale=9%3A16")
+
 wait = WebDriverWait(driver, 3)
-_9_16_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "configItemTitle--skk7a")))
-_9_16_button.click()
-time.sleep(10)
-#-------------
-# Switch to the new tab
-new_tab_handle = driver.window_handles[1]  # Assuming the new tab is the second window handle
-driver.switch_to.window(new_tab_handle)
-#-------------
-# skip_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "guide-modal-footer-skip-btn")))
 skip_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button.guide-modal-footer-btn.guide-modal-footer-skip-btn')))
 skip_button.click()
 time.sleep(2)
-#-------------
+
 wait = WebDriverWait(driver, 2)
 upload_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "icon-upload-wrap")))
 upload_button.click()
@@ -64,35 +95,10 @@ try:
 	print("ok button")
 except Exception as e:
 	print(e)
-#-------------
 
-# element = WebDriverWait(driver, 10).until(
-#     EC.element_to_be_clickable((By.ID, "side-tab-filter"))
-# )
 
-# element_to_scroll_to = driver.find_element(By.ID, "side-tab-filter")
-
-# # Scroll to the element using the DOWN arrow key
-# ActionChains(driver).move_to_element(element_to_scroll_to).send_keys(Keys.ARROW_DOWN).perform()
-
-# # Now you can interact with the element if needed
-# element_to_scroll_to.click()
-# print("Scroll done")
-#---------------
-
-sidebar_panel = driver.find_element(By.CLASS_NAME, "lv-tabs-header-overflow-scroll")
-
-# Create an ActionChains object to perform actions on the web page
-actions = ActionChains(driver)
-
-# Perform a series of actions to scroll the sidebar panel
-actions.move_to_element(sidebar_panel)
-actions.click_and_hold().move_by_offset(0, 100).release().perform()
-
-element_to_scroll_to = driver.find_element(By.ID, "side-tab-filter")
-element_to_scroll_to.click()
-print("Scroll done")
-#-------------
-time.sleep(10)
-
+# close the browser
 driver.quit()
+
+
+print('Finished ...')
