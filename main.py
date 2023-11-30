@@ -12,7 +12,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 
-driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument("--window-size=1200,1000")
+
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
 email="alim.abdul.5915@gmail.com"
 password="adminmilon"
@@ -49,25 +52,30 @@ loadCookies()
 print("driver.current_url: ", driver.current_url)
 
 def login(driver):
-    print('Please Login the the website')
+    try:
+        print('Please Login the the website')
 
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "signUsername"))).send_keys(email)
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "signUsername"))).send_keys(email)
 
-    wait = WebDriverWait(driver, 5)
-    continue_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "lv-btn-primary")))
-    continue_button.click()
-    time.sleep(5)
-    #-------------
-    WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="password"]'))).send_keys(password)
-    # driver.find_element(By.CSS_SELECTOR, 'input[type="password"]').send_keys(password)
-    time.sleep(3)
-    #-------------
-    sign_in_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "lv_sign_in_panel_wide-primary-button")))
-    sign_in_button.click()
-    time.sleep(15)
+        wait = WebDriverWait(driver, 5)
+        continue_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "lv-btn-primary")))
+        continue_button.click()
+        time.sleep(5)
+        #-------------
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="password"]'))).send_keys(password)
+        # driver.find_element(By.CSS_SELECTOR, 'input[type="password"]').send_keys(password)
+        time.sleep(3)
+        #-------------
+        sign_in_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "lv_sign_in_panel_wide-primary-button")))
+        sign_in_button.click()
+        time.sleep(15)
 
-    # After successful login save new session cookies ot json file
-    saveCookies(driver)
+        # After successful login save new session cookies ot json file
+        saveCookies(driver)
+    except Exception as e:
+        os.remove("cookies.json")
+        login(driver)
+
 
 if 'https://www.capcut.com/my-edit?enter_from=login' in driver.current_url:
     print('Previous session loaded')
@@ -100,14 +108,30 @@ WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "side-tab
 print("filter clicked.")
 
 # items_to_click = ["Badbunny", "Tuileries", "Sardinia"]
-
-xpath_selector = f"//div[@class='card-item-label' and text()='{'Sardinia'}']"
-x = f'//*[@id="lv-tabs-4-panel-0"]/div/div/div[1]/div/div/div[2]/div/div[3]/div[1]/div/div[1]/div[1]/div'
-
-WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.XPATH, x))).click()
-
+#-------------------------------
+filter_name = 'Tuileries'
+text_element = WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.XPATH, f"//*[text()='{filter_name}']")))
+parent_element = text_element.find_element(By.XPATH, "..")
+parent_element.click()
 print("select filter")
-time.sleep(190)
+time.sleep(5)
+#----scroll horizontal filter-----
+element = driver.find_element(By.CLASS_NAME, "timeline-play-cursor-hd")
+horizontal_bar_width=30
+ActionChains(driver).click_and_hold(element).move_by_offset(horizontal_bar_width, 0).release().perform()
+time.sleep(5)
+#-------------------------------
+# element = driver.find_element(By.CLASS_NAME, "timeline-preview-line-module__timeline-preview-line--JJ4Yo")
+# horizontal_bar_width=500
+# ActionChains(driver).click_and_hold(element).move_by_offset(horizontal_bar_width/2, 0).release().perform()
+# time.sleep(5)
+#-------------------------------
+filter_name = 'Badbunny'
+text_element = WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.XPATH, f"//*[text()='{filter_name}']")))
+parent_element = text_element.find_element(By.XPATH, "..")
+parent_element.click()
+print("select filter")
+time.sleep(5)
 # close the browser
 driver.quit()
 
