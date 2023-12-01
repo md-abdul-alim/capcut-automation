@@ -18,6 +18,8 @@ chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--window-size=1200,800")
 
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
+
+
 # driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
 
@@ -31,6 +33,7 @@ def text_to_seconds(time_text):
         return total_seconds
     else:
         return None
+
 
 def saveCookies(driver):
     cookies = driver.get_cookies()
@@ -110,7 +113,8 @@ else:
     driver.get(constant.DASHBOARD_URL)
 
 try:
-    skip_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button.guide-modal-footer-btn.guide-modal-footer-skip-btn')))
+    skip_button = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'button.guide-modal-footer-btn.guide-modal-footer-skip-btn')))
     skip_button.click()
     time.sleep(2)
 except Exception as e:
@@ -131,36 +135,39 @@ print("filter clicked.")
 
 WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "player-time")))
 video_length_text = driver.find_element(By.CLASS_NAME, "player-time").text.strip().split("\n")[-1]
-# print("video_length_block: ", video_length_block.text)
-# video_length_text = video_length_block.find_elements(By.TAG_NAME, "span")[1].text
 print("video_length_text: ", video_length_text)
 video_length = round(text_to_seconds(video_length_text))
 print("video_length: ", video_length)
 element = driver.find_element(By.CLASS_NAME, "timeline-play-cursor-hd")
 filter_pixel = (constant.for_1200_width_video_bar / video_length) * 3
 print("filter_pixel: ", filter_pixel)
-if filter_pixel < 10:
-    filter_pixel = 10
+if filter_pixel < 7:
+    filter_pixel = 7
 number_of_filter = int(constant.for_1200_width_video_bar / filter_pixel)
 
 # -------------------------------
-for i in range(0, number_of_filter+1):
-# for i in range(0, 1):
-    text_element = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, f"//*[text()='{constant.FILTER_NAME}']")))
+for i in range(0, number_of_filter + 1):
+    # for i in range(0, 10):
+    # for i in range(0, 1):
+    text_element = WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, f"//*[text()='{constant.FILTER_NAME}']")))
     parent_element = text_element.find_element(By.XPATH, "..")
     parent_element.click()
     print("select filter")
-    time.sleep(30)
+    if i == 0:
+        time.sleep(15)
+    else:
+        time.sleep(2)
     # ----scroll horizontal filter-----
-      # filter time 3 sec
+    # filter time 3 sec
     # ActionChains(driver).click_and_hold(element).move_by_offset(constant.for_1200_width_video_bar, 0).release().perform()
     ActionChains(driver).click_and_hold(element).move_by_offset(filter_pixel, 0).release().perform()
-    time.sleep(10)
+    time.sleep(2)
 
 # moving cursor to start
 ActionChains(driver).click_and_hold(element).move_by_offset(-constant.for_1200_width_video_bar, 0).release().perform()
 # ---------------------------------
-time.sleep(60)
+time.sleep(600)
 WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[8]/div/button"))).click()
 
 ok_button(constant.POPUP_XPATH)
