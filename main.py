@@ -58,8 +58,9 @@ def loadCookies():
 driver.get(constant.LOGIN_URL)
 
 # Load old session into the browser
-loadCookies()
-driver.get(constant.DASHBOARD_URL)
+if os.path.exists('cookies.json'):
+    loadCookies()
+    driver.get(constant.DASHBOARD_URL)
 print("driver.current_url: ", driver.current_url)
 
 
@@ -106,8 +107,7 @@ if constant.DASHBOARD_URL in driver.current_url:
     print('Previous session loaded')
 else:
     login(driver)
-
-driver.get(constant.DASHBOARD_URL)
+    driver.get(constant.DASHBOARD_URL)
 
 try:
     skip_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button.guide-modal-footer-btn.guide-modal-footer-skip-btn')))
