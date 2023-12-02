@@ -17,11 +17,11 @@ chrome_options.add_argument("--window-size=1200,800")
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 # driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
+#-------------------------Login Start-------------------
 driver.get(constant.LOGIN_URL)
-
 # Load old session into the browser
 if os.path.exists('cookies.json'):
-    function.loadCookies(driver=driver)
+    function.loadCookies(driver)
     driver.get(constant.DASHBOARD_URL)
 
 if constant.DASHBOARD_URL in driver.current_url:
@@ -29,6 +29,7 @@ if constant.DASHBOARD_URL in driver.current_url:
 else:
     function.login(driver)
     driver.get(constant.DASHBOARD_URL)
+#-------------------------Login End-------------------
 
 try:
     skip_button = WebDriverWait(driver, 10).until(

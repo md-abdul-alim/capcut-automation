@@ -16,7 +16,6 @@ def saveCookies(driver):
     print('New Cookies saved successfully')
 
 def loadCookies(driver):
-    # Check if cookies file exists
     if 'cookies.json' in os.listdir():
 
         with open('cookies.json', 'r') as file:
@@ -52,7 +51,7 @@ def login(driver):
         time.sleep(15)
 
         # After successful login save new session cookies ot json file
-        function.saveCookies(driver)
+        saveCookies(driver)
     except Exception as e:
         if 'cookies.json' in os.listdir():
             os.remove("cookies.json")
