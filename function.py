@@ -82,6 +82,21 @@ def open_filter(driver):
     time.sleep(5)
     WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.ID, "side-tab-filter"))).click()
     print("filter clicked.")
+    time.sleep(10)
+    try:
+        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.FILTER_TYPE_EXPAND_XPATH))).click()
+        print('filter type expand')
+        time.sleep(2)
+        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.FILTER_DICT_WITH_EXPAND[constant.FILTER_TYPE]))).click()
+        print('filter type clicked')
+        time.sleep(5)
+    except Exception as e:
+        print('except block')
+        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.FILTER_DICT_WITHOUT_EXPAND[constant.FILTER_TYPE]))).click()
+        print('filter type clicked')
+        time.sleep(5)
+
+
 
 def basic_effect(driver):
     intensity_input = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, constant.BASIC_INTENSITY_XPATH)))

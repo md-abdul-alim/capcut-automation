@@ -56,10 +56,9 @@ if filter_pixel < 7:
     filter_pixel = 7
 number_of_filter = int(constant.FOR_1200_WIDTH_VIDEO_BAR / filter_pixel)
 
-# -------------------------------
 # scroll down for filter
 function.open_filter(driver)
-
+time.sleep(5)
 # for i in range(0, number_of_filter + 1):
 for i in range(0, 1):
     # for i in range(0, 1):

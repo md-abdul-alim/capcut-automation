@@ -3,9 +3,11 @@ LOGIN_EMAIL = "alim.abdul.5915@gmail.com"
 LOGIN_PASSWORD = "adminmilon"
 DASHBOARD_URL = "https://www.capcut.com/editor?enter_from=create_new&from_page=work_space&__action_from=my_draft&position=my_draft&scenario=tiktok_ads&scale=9%3A16"
 
-FILTER_TYPE_EXPAND_XPATH='//*[@id="expandable-tags__list-wrapper"]/div[2]/div[1]'
+FILTER_TYPE_EXPAND_XPATH='//*[@id="expandable-tags__list-wrapper"]/div[3]/div'
+
 FILTER_TYPE='Life'
-FILTER_DICT = {
+FILTER_NAME = 'Taro'  # ["Urbanoid", "Badbunny", "Tuileries", "Sardinia", "Taro"]
+FILTER_DICT_WITH_EXPAND = {
     'Life': '//*[@id="expandable-tags__list-wrapper"]/div[2]/div[3]',
     'Food': '//*[@id="expandable-tags__list-wrapper"]/div[2]/div[4]',
     'Movies': '//*[@id="expandable-tags__list-wrapper"]/div[2]/div[5]',
@@ -15,7 +17,17 @@ FILTER_DICT = {
     'Mono': '//*[@id="expandable-tags__list-wrapper"]/div[2]/div[9]',
     'Style': '//*[@id="expandable-tags__list-wrapper"]/div[2]/div[10]',
 }
-FILTER_NAME = 'Badbunny'  # ["Urbanoid", "Badbunny", "Tuileries", "Sardinia"]
+
+FILTER_DICT_WITHOUT_EXPAND = {
+    'Life': '//*[@id="lv-tabs-2-panel-0"]/div/div/div[1]/div/div/div[1]/div/div[2]/div[2]',
+    'Food': '//*[@id="lv-tabs-2-panel-0"]/div/div/div[1]/div/div/div[2]/div/div[2]/div[2]',
+    'Movies': '//*[@id="lv-tabs-2-panel-0"]/div/div/div[1]/div/div/div[3]/div/div[2]/div[2]',
+    'Night Scene': '//*[@id="lv-tabs-2-panel-0"]/div/div/div[1]/div/div/div[4]/div/div[2]/div[2]',
+    'Scenery': '//*[@id="lv-tabs-2-panel-0"]/div/div/div[1]/div/div/div[4]/div/div[2]/div[2]',
+    'Retro': '//*[@id="lv-tabs-2-panel-0"]/div/div/div[1]/div/div/div[4]/div/div[2]/div[2]',
+    'Mono': '//*[@id="lv-tabs-2-panel-0"]/div/div/div[1]/div/div/div[4]/div/div[2]/div[2]',
+    'Style': '//*[@id="lv-tabs-2-panel-0"]/div/div/div[1]/div/div/div[5]/div/div[2]/div[2]',
+}
 FOR_1200_WIDTH_VIDEO_BAR=275
 
 POPUP_XPATH = "/html/body/div[10]/div[4]/div/button"
