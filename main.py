@@ -1,7 +1,6 @@
 # selenium 4
 import os
 from selenium import webdriver
-import json
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
@@ -45,13 +44,6 @@ upload_button.click()
 # -------------
 function.ok_button(driver=driver, xpath=constant.POPUP_XPATH)
 
-# scroll down for filter
-WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "lv-tabs-down-icon"))).click()
-print("scroll working.........")
-time.sleep(5)
-WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.ID, "side-tab-filter"))).click()
-print("filter clicked.")
-
 WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "player-time")))
 video_length_text = driver.find_element(By.CLASS_NAME, "player-time").text.strip().split("\n")[-1]
 print("video_length_text: ", video_length_text)
@@ -65,6 +57,9 @@ if filter_pixel < 7:
 number_of_filter = int(constant.FOR_1200_WIDTH_VIDEO_BAR / filter_pixel)
 
 # -------------------------------
+# scroll down for filter
+function.open_filter(driver)
+
 # for i in range(0, number_of_filter + 1):
 for i in range(0, 1):
     # for i in range(0, 1):

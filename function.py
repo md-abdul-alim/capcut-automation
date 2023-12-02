@@ -75,6 +75,13 @@ def text_to_seconds(time_text):
         return total_seconds
     else:
         return None
+    
+def open_filter(driver):
+    WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "lv-tabs-down-icon"))).click()
+    print("scroll working.........")
+    time.sleep(5)
+    WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.ID, "side-tab-filter"))).click()
+    print("filter clicked.")
 
 def basic_effect(driver):
     intensity_input = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, constant.BASIC_INTENSITY_XPATH)))
