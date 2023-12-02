@@ -1,3 +1,5 @@
+import os
+import json
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -6,6 +8,56 @@ import time
 import constant
 import input
 
+def saveCookies(driver):
+    cookies = driver.get_cookies()
+
+    with open('cookies.json', 'w') as file:
+        json.dump(cookies, file)
+    print('New Cookies saved successfully')
+
+def loadCookies(driver):
+    # Check if cookies file exists
+    if 'cookies.json' in os.listdir():
+
+        with open('cookies.json', 'r') as file:
+            cookies = json.load(file)
+
+        for cookie in cookies:
+            driver.add_cookie(cookie)
+    else:
+        print('No cookies file found')
+
+    driver.refresh()  # Refresh Browser after login
+
+def login(driver):
+    try:
+        print('Please Login the the website')
+
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "signUsername"))).send_keys(
+            constant.LOGIN_EMAIL)
+
+        wait = WebDriverWait(driver, 5)
+        continue_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "lv-btn-primary")))
+        continue_button.click()
+        time.sleep(5)
+        # -------------
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="password"]'))).send_keys(
+            constant.LOGIN_PASSWORD)
+        time.sleep(3)
+        # -------------
+        sign_in_button = wait.until(
+            EC.presence_of_element_located((By.CLASS_NAME, "lv_sign_in_panel_wide-primary-button")))
+        sign_in_button.click()
+        time.sleep(15)
+
+        # After successful login save new session cookies ot json file
+        function.saveCookies(driver)
+    except Exception as e:
+        if 'cookies.json' in os.listdir():
+            os.remove("cookies.json")
+            login(driver)
+
 def ok_button(driver, xpath):
     try:
         WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, f"{xpath}"))).click()
@@ -13,6 +65,17 @@ def ok_button(driver, xpath):
         print("ok button")
     except Exception as e:
         print("Ok button error: ", e)
+
+def text_to_seconds(time_text):
+    # Use regular expression to extract hours, minutes, seconds, and milliseconds
+    splitted_time = time_text.split(':')
+
+    if len(splitted_time) == 3:
+        minutes, seconds, milliseconds = map(int, splitted_time)
+        total_seconds = minutes * 60 + seconds + milliseconds / 1000
+        return total_seconds
+    else:
+        return None
 
 def basic_effect(driver):
     intensity_input = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, constant.BASIC_INTENSITY_XPATH)))
