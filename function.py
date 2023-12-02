@@ -76,13 +76,13 @@ def text_to_seconds(time_text):
     else:
         return None
     
-def open_filter(driver):
+def open_filter_and_search(driver):
     WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "lv-tabs-down-icon"))).click()
     print("scroll working.........")
-    time.sleep(5)
+    time.sleep(3)
     WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.ID, "side-tab-filter"))).click()
     print("filter clicked.")
-    time.sleep(10)
+    time.sleep(5)
     try:
         WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.FILTER_TYPE_EXPAND_XPATH))).click()
         print('filter type expand')
