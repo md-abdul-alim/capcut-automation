@@ -173,7 +173,7 @@ def basic_effect(driver):
     effect_grain_input.send_keys(Keys.RETURN)
     #------------------
     time.sleep(2)
-    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "mask-exit-button-container"))).click()
+    WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "mask-exit-button-container"))).click()
     #------------------
     blend_opacity_input = WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.XPATH, constant.BASIC_BLEND_OPACITY_XPATH)))
@@ -216,38 +216,32 @@ def smart_tools_body_effect(driver):
     time.sleep(2)
     WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_XPATH))).click()
     #------------------
-    body_slim_input = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_SLIM_XPATH)))
+    body_slim_input = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_SLIM_XPATH)))
     body_slim_input.send_keys(Keys.CONTROL, 'a')
     body_slim_input.send_keys(input.SMART_TOOLS_RETOUCH_BODY_SLIM)
     body_slim_input.send_keys(Keys.RETURN)
     #------------------
-    body_legs_input = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_LEGS_XPATH)))
+    body_legs_input = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_LEGS_XPATH)))
     body_legs_input.send_keys(Keys.CONTROL, 'a')
     body_legs_input.send_keys(input.SMART_TOOLS_RETOUCH_BODY_LEGS)
     body_legs_input.send_keys(Keys.RETURN)
     #------------------
-    body_waist_input = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_WAIST_XPATH)))
+    body_waist_input = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_WAIST_XPATH)))
     body_waist_input.send_keys(Keys.CONTROL, 'a')
     body_waist_input.send_keys(input.SMART_TOOLS_RETOUCH_BODY_WAIST)
     body_waist_input.send_keys(Keys.RETURN)
     #------------------
-    body_head_input = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_HEAD_XPATH)))
+    body_head_input = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_HEAD_XPATH)))
     body_head_input.send_keys(Keys.CONTROL, 'a')
     body_head_input.send_keys(input.SMART_TOOLS_RETOUCH_BODY_HEAD)
     body_head_input.send_keys(Keys.RETURN)
     #------------------
-    body_smooth_input = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_SMOOTH_XPATH)))
+    body_smooth_input = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_SMOOTH_XPATH)))
     body_smooth_input.send_keys(Keys.CONTROL, 'a')
     body_smooth_input.send_keys(input.SMART_TOOLS_RETOUCH_BODY_SMOOTH)
     body_smooth_input.send_keys(Keys.RETURN)
     #------------------
-    body_brighten_input = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_BRIGHTEN_XPATH)))
+    body_brighten_input = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_BRIGHTEN_XPATH)))
     body_brighten_input.send_keys(Keys.CONTROL, 'a')
     body_brighten_input.send_keys(input.SMART_TOOLS_RETOUCH_BODY_BRIGHTEN)
     body_brighten_input.send_keys(Keys.RETURN)

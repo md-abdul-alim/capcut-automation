@@ -11,10 +11,35 @@ import time
 import constant
 import function
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument("--window-size=1200,800")
-driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
-# driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+def get_options():
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
+    }
+    options = webdriver.ChromeOptions()
+    # options.add_argument("--headless=new")
+    # options.add_argument("--single-process")
+    # options.add_argument('--ignore-certificate-errors')
+    # options.add_argument('--ignore-ssl-errors')
+    # options.add_argument('--allow-running-insecure-content')
+    # options.add_argument('--disable-web-security')
+    # options.add_argument('--disable-features=IsolateOrigins,site-per-process')
+    # options.add_argument('--disable-extensions')
+    options.add_argument("--window-size=1200,800")
+    options.add_argument(f'--user-agent={headers["User-Agent"]}')
+    options.add_argument('--disable-blink-features=AutomationControlled')
+    options.add_experimental_option("useAutomationExtension", False)
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    # # add page load strategy to none
+    # options.page_load_strategy = 'none'
+
+    return options
+
+
+def config_driver():
+    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=get_options())
+    return driver
+
+driver = config_driver()
 
 #-------------------------Login Start-------------------
 driver.get(constant.LOGIN_URL)
@@ -49,6 +74,7 @@ video_length_text = driver.find_element(By.CLASS_NAME, "player-time").text.strip
 print("video_length_text: ", video_length_text)
 video_length = round(function.text_to_seconds(video_length_text))
 print("video_length: ", video_length)
+WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "timeline-play-cursor-hd")))
 element = driver.find_element(By.CLASS_NAME, "timeline-play-cursor-hd")
 filter_pixel = (constant.FOR_1200_WIDTH_VIDEO_BAR / video_length) * 3
 print("filter_pixel: ", filter_pixel)
@@ -59,8 +85,8 @@ number_of_filter = int(constant.FOR_1200_WIDTH_VIDEO_BAR / filter_pixel)
 # scroll down for filter
 function.open_filter_and_search(driver)
 time.sleep(5)
-# for i in range(0, number_of_filter + 1):
-for i in range(0, 1):
+for i in range(0, number_of_filter + 1):
+# for i in range(0, 1):
     # for i in range(0, 1):
     text_element = WebDriverWait(driver, 30).until(
         EC.presence_of_element_located((By.XPATH, f"//*[text()='{constant.FILTER_NAME}']")))
@@ -68,16 +94,16 @@ for i in range(0, 1):
     parent_element.click()
     print("select filter")
     if i == 0:
-        time.sleep(15)
+        time.sleep(30)
     else:
-        time.sleep(2)
+        time.sleep(1)
     # ----scroll horizontal filter-----
     # ActionChains(driver).click_and_hold(element).move_by_offset(constant.FOR_1200_WIDTH_VIDEO_BAR, 0).release().perform()
     ActionChains(driver).click_and_hold(element).move_by_offset(filter_pixel, 0).release().perform()
-    time.sleep(2)
+    time.sleep(1)
 
 # moving cursor to start
-ActionChains(driver).click_and_hold(element).move_by_offset(-constant.FOR_1200_WIDTH_VIDEO_BAR, 0).release().perform()
+ActionChains(driver).click_and_hold(element).move_by_offset(-(constant.FOR_1200_WIDTH_VIDEO_BAR + 100), 0).release().perform()
 # ---------------------------------
 time.sleep(10)
 WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[8]/div/button"))).click()
