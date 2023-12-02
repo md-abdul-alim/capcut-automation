@@ -225,29 +225,29 @@ color_shadow_input.send_keys(Keys.CONTROL, 'a')
 color_shadow_input.send_keys(input.BASIC_COLOR_ADJUSTMENT_LIGHTNESS_SHADOW)
 color_shadow_input.send_keys(Keys.RETURN)
 #------------------
-# effect_sharpness_input = WebDriverWait(driver, 5).until(
-#     EC.presence_of_element_located((By.XPATH, constant.BASIC_EFFECT_SHARPNESS_XPATH)))
-# effect_sharpness_input.send_keys(Keys.CONTROL, 'a')
-# effect_sharpness_input.send_keys(input.BASIC_EFFECT_SHARPNESS)
-# effect_sharpness_input.send_keys(Keys.RETURN)
-# #------------------
-# effect_vignette_input = WebDriverWait(driver, 5).until(
-#     EC.presence_of_element_located((By.XPATH, constant.BASIC_EFFECT_VIGNETTE_XPATH)))
-# effect_vignette_input.send_keys(Keys.CONTROL, 'a')
-# effect_vignette_input.send_keys(input.BASIC_EFFECT_VIGNETTE)
-# effect_vignette_input.send_keys(Keys.RETURN)
-# #------------------
-# effect_fade_input = WebDriverWait(driver, 5).until(
-#     EC.presence_of_element_located((By.XPATH, constant.BASIC_EFFECT_FADE_XPATH)))
-# effect_fade_input.send_keys(Keys.CONTROL, 'a')
-# effect_fade_input.send_keys(input.BASIC_EFFECT_FADE)
-# effect_fade_input.send_keys(Keys.RETURN)
-# #------------------
-# effect_grain_input = WebDriverWait(driver, 5).until(
-#     EC.presence_of_element_located((By.XPATH, constant.BASIC_EFFECT_GRAIN_XPATH)))
-# effect_grain_input.send_keys(Keys.CONTROL, 'a')
-# effect_grain_input.send_keys(input.BASIC_EFFECT_GRAIN)
-# effect_grain_input.send_keys(Keys.RETURN)
+effect_sharpness_input = WebDriverWait(driver, 5).until(
+    EC.presence_of_element_located((By.XPATH, constant.BASIC_EFFECT_SHARPNESS_XPATH)))
+effect_sharpness_input.send_keys(Keys.CONTROL, 'a')
+effect_sharpness_input.send_keys(input.BASIC_EFFECT_SHARPNESS)
+effect_sharpness_input.send_keys(Keys.RETURN)
+#------------------
+effect_vignette_input = WebDriverWait(driver, 5).until(
+    EC.presence_of_element_located((By.XPATH, constant.BASIC_EFFECT_VIGNETTE_XPATH)))
+effect_vignette_input.send_keys(Keys.CONTROL, 'a')
+effect_vignette_input.send_keys(input.BASIC_EFFECT_VIGNETTE)
+effect_vignette_input.send_keys(Keys.RETURN)
+#------------------
+effect_fade_input = WebDriverWait(driver, 5).until(
+    EC.presence_of_element_located((By.XPATH, constant.BASIC_EFFECT_FADE_XPATH)))
+effect_fade_input.send_keys(Keys.CONTROL, 'a')
+effect_fade_input.send_keys(input.BASIC_EFFECT_FADE)
+effect_fade_input.send_keys(Keys.RETURN)
+#------------------
+effect_grain_input = WebDriverWait(driver, 5).until(
+    EC.presence_of_element_located((By.XPATH, constant.BASIC_EFFECT_GRAIN_XPATH)))
+effect_grain_input.send_keys(Keys.CONTROL, 'a')
+effect_grain_input.send_keys(input.BASIC_EFFECT_GRAIN)
+effect_grain_input.send_keys(Keys.RETURN)
 #------------------
 time.sleep(2)
 WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "mask-exit-button-container"))).click()
@@ -283,12 +283,52 @@ transform_rotate_input.send_keys(input.BASIC_TRANSFORM_ROTATE)
 transform_rotate_input.send_keys(Keys.RETURN)
 
 #-------------------------Basic input End--------------------------
+#-------------------------Smart Tools input Start--------------------------
+time.sleep(15)
 time.sleep(2)
 WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_XPATH))).click()
 time.sleep(2)
 WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_XPATH))).click()
 time.sleep(2)
 WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_XPATH))).click()
+#------------------
+body_slim_input = WebDriverWait(driver, 5).until(
+    EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_SLIM_XPATH)))
+body_slim_input.send_keys(Keys.CONTROL, 'a')
+body_slim_input.send_keys(input.SMART_TOOLS_RETOUCH_BODY_SLIM)
+body_slim_input.send_keys(Keys.RETURN)
+#------------------
+body_legs_input = WebDriverWait(driver, 5).until(
+    EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_LEGS_XPATH)))
+body_legs_input.send_keys(Keys.CONTROL, 'a')
+body_legs_input.send_keys(input.SMART_TOOLS_RETOUCH_BODY_LEGS)
+body_legs_input.send_keys(Keys.RETURN)
+#------------------
+body_waist_input = WebDriverWait(driver, 5).until(
+    EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_WAIST_XPATH)))
+body_waist_input.send_keys(Keys.CONTROL, 'a')
+body_waist_input.send_keys(input.SMART_TOOLS_RETOUCH_BODY_WAIST)
+body_waist_input.send_keys(Keys.RETURN)
+#------------------
+body_head_input = WebDriverWait(driver, 5).until(
+    EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_HEAD_XPATH)))
+body_head_input.send_keys(Keys.CONTROL, 'a')
+body_head_input.send_keys(input.SMART_TOOLS_RETOUCH_BODY_HEAD)
+body_head_input.send_keys(Keys.RETURN)
+#------------------
+body_smooth_input = WebDriverWait(driver, 5).until(
+    EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_SMOOTH_XPATH)))
+body_smooth_input.send_keys(Keys.CONTROL, 'a')
+body_smooth_input.send_keys(input.SMART_TOOLS_RETOUCH_BODY_SMOOTH)
+body_smooth_input.send_keys(Keys.RETURN)
+#------------------
+body_brighten_input = WebDriverWait(driver, 5).until(
+    EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_RETOUCH_BODY_BRIGHTEN_XPATH)))
+body_brighten_input.send_keys(Keys.CONTROL, 'a')
+body_brighten_input.send_keys(input.SMART_TOOLS_RETOUCH_BODY_BRIGHTEN)
+body_brighten_input.send_keys(Keys.RETURN)
+#-------------------------Smart Tools input End--------------------------
+
 time.sleep(995)
 # close the browser
 driver.quit()
