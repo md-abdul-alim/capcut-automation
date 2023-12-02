@@ -3,6 +3,18 @@ LOGIN_EMAIL = "alim.abdul.5915@gmail.com"
 LOGIN_PASSWORD = "adminmilon"
 DASHBOARD_URL = "https://www.capcut.com/editor?enter_from=create_new&from_page=work_space&__action_from=my_draft&position=my_draft&scenario=tiktok_ads&scale=9%3A16"
 
+FILTER_TYPE_EXPAND_XPATH='//*[@id="expandable-tags__list-wrapper"]/div[2]/div[1]'
+FILTER_TYPE=''
+FILTER_DICT = {
+    'Life': '//*[@id="expandable-tags__list-wrapper"]/div[2]/div[3]',
+    'Food': '//*[@id="expandable-tags__list-wrapper"]/div[2]/div[4]',
+    'Movies': '//*[@id="expandable-tags__list-wrapper"]/div[2]/div[5]',
+    'Night Scene': '//*[@id="expandable-tags__list-wrapper"]/div[2]/div[6]',
+    'Scenery': '//*[@id="expandable-tags__list-wrapper"]/div[2]/div[7]',
+    'Retro': '//*[@id="expandable-tags__list-wrapper"]/div[2]/div[8]',
+    'Mono': '//*[@id="expandable-tags__list-wrapper"]/div[2]/div[9]',
+    'Style': '//*[@id="expandable-tags__list-wrapper"]/div[2]/div[10]',
+}
 FILTER_NAME = 'Badbunny'  # ["Urbanoid", "Badbunny", "Tuileries", "Sardinia"]
 FOR_1200_WIDTH_VIDEO_BAR=275
 
