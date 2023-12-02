@@ -61,3 +61,7 @@ SMART_TOOLS_RETOUCH_BODY_WAIST_XPATH='//*[@id="lv-tabs-6-panel-3"]/div/div/div[4
 SMART_TOOLS_RETOUCH_BODY_HEAD_XPATH='//*[@id="lv-tabs-6-panel-3"]/div/div/div[5]/div/div[2]/div/div/div[2]/div/span/span/input'
 SMART_TOOLS_RETOUCH_BODY_SMOOTH_XPATH='//*[@id="lv-tabs-6-panel-3"]/div/div/div[6]/div/div[2]/div/div/div[2]/div/span/span/input'
 SMART_TOOLS_RETOUCH_BODY_BRIGHTEN_XPATH='//*[@id="lv-tabs-6-panel-3"]/div/div/div[7]/div/div[2]/div/div/div[2]/div/span/span/input'
+
+EXPORT_BUTTON='//*[@id="export-video-btn"]'
+DOWNLOAD_BUTTON='/html/body/div[9]/span/div[1]/div/div[4]/button'
+CONFIRM_EXPORT_BUTTON='//*[@id="export-confirm-button"]'

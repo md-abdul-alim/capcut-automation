@@ -96,8 +96,6 @@ def open_filter_and_search(driver):
         print('filter type clicked')
         time.sleep(5)
 
-
-
 def basic_effect(driver):
     intensity_input = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, constant.BASIC_INTENSITY_XPATH)))
     intensity_input.send_keys(Keys.CONTROL, 'a')
@@ -253,3 +251,10 @@ def smart_tools_body_effect(driver):
     body_brighten_input.send_keys(Keys.CONTROL, 'a')
     body_brighten_input.send_keys(input.SMART_TOOLS_RETOUCH_BODY_BRIGHTEN)
     body_brighten_input.send_keys(Keys.RETURN)
+
+def download_function(driver):
+    WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, constant.EXPORT_BUTTON))).click()
+    time.sleep(3)
+    WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, constant.DOWNLOAD_BUTTON))).click()
+    time.sleep(3)
+    WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, constant.CONFIRM_EXPORT_BUTTON))).click()

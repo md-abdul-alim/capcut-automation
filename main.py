@@ -90,6 +90,8 @@ function.basic_effect(driver)
 function.smart_tools_body_effect(driver)
 #-------------------------Smart Tools input End---------------
 
+function.ok_button(driver=driver, xpath='/html/body/div[9]/div[4]/div/button')
+function.download_function(driver)
 time.sleep(995)
 # close the browser
 driver.quit()
