@@ -9,6 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
+from pydantic import BaseModel
 import time
 import constant
 import input
@@ -125,12 +126,12 @@ def open_filter_and_search(driver):
         time.sleep(2)
         WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.FILTER_DICT_WITH_EXPAND[constant.FILTER_TYPE]))).click()
         print('filter type clicked')
-        time.sleep(5)
+        time.sleep(7)
     except Exception as e:
         print('except block')
         WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.FILTER_DICT_WITHOUT_EXPAND[constant.FILTER_TYPE]))).click()
         print('filter type clicked')
-        time.sleep(5)
+        time.sleep(7)
 
 def basic_effect(driver):
     intensity_input = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, constant.BASIC_INTENSITY_XPATH)))
@@ -142,7 +143,7 @@ def basic_effect(driver):
     #------------------
     time.sleep(2)
     WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.BASIC_COLOR_ADJUSTMENT_XPATH))).click()
-    color_saturation_input = WebDriverWait(driver, 5).until(
+    color_saturation_input = WebDriverWait(driver, 30).until(
         EC.presence_of_element_located((By.XPATH, constant.BASIC_COLOR_ADJUSTMENT_COLOR_SATURATION_XPATH)))
     color_saturation_input.send_keys(Keys.CONTROL, 'a')
     color_saturation_input.send_keys(input.BASIC_COLOR_ADJUSTMENT_COLOR_SATURATION)
@@ -309,9 +310,9 @@ def video_length_pixel_calculation(driver):
     number_of_filter = int(constant.FOR_1200_WIDTH_VIDEO_BAR / filter_pixel)
     return element, filter_pixel, number_of_filter
 
-def horizontal_scroll_movement(driver, element, filter_pixel):
-    # for i in range(0, number_of_filter + 1):
-    for i in range(0, 1):
+def horizontal_scroll_movement(driver, element, filter_pixel, number_of_filter):
+    for i in range(0, number_of_filter + 1):
+    # for i in range(0, 1):
         # for i in range(0, 1):
         text_element = WebDriverWait(driver, 30).until(
             EC.presence_of_element_located((By.XPATH, f"//*[text()='{constant.FILTER_NAME}']")))
@@ -328,11 +329,9 @@ def horizontal_scroll_movement(driver, element, filter_pixel):
         time.sleep(1)
     # moving cursor to start
     ActionChains(driver).click_and_hold(element).move_by_offset(-(constant.FOR_1200_WIDTH_VIDEO_BAR + 100), 0).release().perform()
+    time.sleep(10)
 
-
-
-if __name__ == "__main__":
-    #------------Login Start------------
+def start_login(driver):
     if os.path.exists('cookies.json'):
         loadCookies(driver)
         driver.get(constant.DASHBOARD_URL)
@@ -342,27 +341,31 @@ if __name__ == "__main__":
     else:
         login(driver)
         driver.get(constant.DASHBOARD_URL)
-    #-------------Login End-----------
-    try:
-        skip_button = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'button.guide-modal-footer-btn.guide-modal-footer-skip-btn')))
-        skip_button.click()
-        time.sleep(2)
-    except Exception as e:
-        print("Skip button not found: ", e)
 
-    WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "cover-placeholder"))).click()
+def skip_click(driver):
+        try:
+            skip_button = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, 'button.guide-modal-footer-btn.guide-modal-footer-skip-btn')))
+            skip_button.click()
+            time.sleep(2)
+        except Exception as e:
+            print("Skip button not found: ", e)
+
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "cover-placeholder"))).click()
+
+def main():
+    #------------Login Start------------
+    start_login(driver)
+    #-------------Login End-----------
+    skip_click(driver)
     ok_button(driver=driver, xpath=constant.POPUP_XPATH)
 
     element, filter_pixel, number_of_filter = video_length_pixel_calculation(driver)
 
     # scroll down for filter
     open_filter_and_search(driver)
-    time.sleep(5)
-    horizontal_scroll_movement(driver, element, filter_pixel)
+    horizontal_scroll_movement(driver, element, filter_pixel, number_of_filter)
 
-    # ---------------------------------
-    time.sleep(10)
     WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[8]/div/button"))).click()
 
     ok_button(driver=driver, xpath=constant.POPUP_XPATH)
@@ -379,3 +382,6 @@ if __name__ == "__main__":
     driver.quit()
 
     print('Finished ...')
+
+
+main()
