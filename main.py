@@ -42,7 +42,7 @@ def config_driver():
     return driver
 
 driver = config_driver()
-
+driver.get(constant.LOGIN_URL)
 
 def saveCookies(driver):
     cookies = driver.get_cookies()
@@ -289,86 +289,93 @@ def download_function(driver):
     time.sleep(3)
     WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, constant.CONFIRM_EXPORT_BUTTON))).click()
 #-------------------------Login Start-------------------
-driver.get(constant.LOGIN_URL)
-# Load old session into the browser
-if os.path.exists('cookies.json'):
-    loadCookies(driver)
-    driver.get(constant.DASHBOARD_URL)
 
-if constant.DASHBOARD_URL in driver.current_url:
-    print('Previous session loaded')
-else:
-    login(driver)
-    driver.get(constant.DASHBOARD_URL)
 #-------------------------Login End-------------------
 
-try:
-    skip_button = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, 'button.guide-modal-footer-btn.guide-modal-footer-skip-btn')))
-    skip_button.click()
-    time.sleep(2)
-except Exception as e:
-    print("Skip button not found: ", e)
-
-upload_button = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "cover-placeholder")))
-upload_button.click()
 
 # -------------
-ok_button(driver=driver, xpath=constant.POPUP_XPATH)
+def video_length_pixel_calculation(driver):
+    WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "player-time")))
+    video_length_text = driver.find_element(By.CLASS_NAME, "player-time").text.strip().split("\n")[-1]
+    print("video_length_text: ", video_length_text)
+    video_length = round(text_to_seconds(video_length_text))
+    print("video_length: ", video_length)
+    WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "timeline-play-cursor-hd")))
+    element = driver.find_element(By.CLASS_NAME, "timeline-play-cursor-hd")
+    filter_pixel = (constant.FOR_1200_WIDTH_VIDEO_BAR / video_length) * 3
+    print("filter_pixel: ", filter_pixel)
+    if filter_pixel < 7:
+        filter_pixel = 7
+    number_of_filter = int(constant.FOR_1200_WIDTH_VIDEO_BAR / filter_pixel)
+    return element, filter_pixel, number_of_filter
 
-WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "player-time")))
-video_length_text = driver.find_element(By.CLASS_NAME, "player-time").text.strip().split("\n")[-1]
-print("video_length_text: ", video_length_text)
-video_length = round(text_to_seconds(video_length_text))
-print("video_length: ", video_length)
-WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "timeline-play-cursor-hd")))
-element = driver.find_element(By.CLASS_NAME, "timeline-play-cursor-hd")
-filter_pixel = (constant.FOR_1200_WIDTH_VIDEO_BAR / video_length) * 3
-print("filter_pixel: ", filter_pixel)
-if filter_pixel < 7:
-    filter_pixel = 7
-number_of_filter = int(constant.FOR_1200_WIDTH_VIDEO_BAR / filter_pixel)
-
-# scroll down for filter
-open_filter_and_search(driver)
-time.sleep(5)
-# for i in range(0, number_of_filter + 1):
-for i in range(0, 1):
-    # for i in range(0, 1):
-    text_element = WebDriverWait(driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, f"//*[text()='{constant.FILTER_NAME}']")))
-    parent_element = text_element.find_element(By.XPATH, "..")
-    parent_element.click()
-    print("select filter")
-    if i == 0:
-        time.sleep(30)
-    else:
+def horizontal_scroll_movement(driver, element, filter_pixel):
+    # for i in range(0, number_of_filter + 1):
+    for i in range(0, 1):
+        # for i in range(0, 1):
+        text_element = WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, f"//*[text()='{constant.FILTER_NAME}']")))
+        parent_element = text_element.find_element(By.XPATH, "..")
+        parent_element.click()
+        print("select filter")
+        if i == 0:
+            time.sleep(30)
+        else:
+            time.sleep(1)
+        # ----scroll horizontal filter-----
+        # ActionChains(driver).click_and_hold(element).move_by_offset(constant.FOR_1200_WIDTH_VIDEO_BAR, 0).release().perform()
+        ActionChains(driver).click_and_hold(element).move_by_offset(filter_pixel, 0).release().perform()
         time.sleep(1)
-    # ----scroll horizontal filter-----
-    # ActionChains(driver).click_and_hold(element).move_by_offset(constant.FOR_1200_WIDTH_VIDEO_BAR, 0).release().perform()
-    ActionChains(driver).click_and_hold(element).move_by_offset(filter_pixel, 0).release().perform()
-    time.sleep(1)
 
-# moving cursor to start
-ActionChains(driver).click_and_hold(element).move_by_offset(-(constant.FOR_1200_WIDTH_VIDEO_BAR + 100), 0).release().perform()
-# ---------------------------------
-time.sleep(10)
-WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[8]/div/button"))).click()
 
-ok_button(driver=driver, xpath=constant.POPUP_XPATH)
-#-------------------------Basic input Start-------------------
-basic_effect(driver)
-#-------------------------Basic input End---------------------
-#-------------------------Smart Tools input Start-------------
-smart_tools_body_effect(driver)
-#-------------------------Smart Tools input End---------------
-ok_button(driver=driver, xpath='/html/body/div[9]/div[4]/div/button')
-download_function(driver)
-time.sleep(995)
-# close the browser
-driver.quit()
 
-print('Finished ...')
+if __name__ == "__main__":
+    #------------Login Start------------
+    if os.path.exists('cookies.json'):
+        loadCookies(driver)
+        driver.get(constant.DASHBOARD_URL)
 
-# if __name__ == "__main__":
-#     main()
+    if constant.DASHBOARD_URL in driver.current_url:
+        print('Previous session loaded')
+    else:
+        login(driver)
+        driver.get(constant.DASHBOARD_URL)
+    #-------------Login End-----------
+    try:
+        skip_button = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'button.guide-modal-footer-btn.guide-modal-footer-skip-btn')))
+        skip_button.click()
+        time.sleep(2)
+    except Exception as e:
+        print("Skip button not found: ", e)
+
+    WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "cover-placeholder"))).click()
+    ok_button(driver=driver, xpath=constant.POPUP_XPATH)
+
+    element, filter_pixel, number_of_filter = video_length_pixel_calculation(driver)
+
+    # scroll down for filter
+    open_filter_and_search(driver)
+    time.sleep(5)
+    horizontal_scroll_movement(driver, element, filter_pixel)
+
+    # moving cursor to start
+    ActionChains(driver).click_and_hold(element).move_by_offset(-(constant.FOR_1200_WIDTH_VIDEO_BAR + 100), 0).release().perform()
+    # ---------------------------------
+    time.sleep(10)
+    WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[8]/div/button"))).click()
+
+    ok_button(driver=driver, xpath=constant.POPUP_XPATH)
+    #-------------------------Basic input Start-------------------
+    basic_effect(driver)
+    #-------------------------Basic input End---------------------
+    #-------------------------Smart Tools input Start-------------
+    smart_tools_body_effect(driver)
+    #-------------------------Smart Tools input End---------------
+    ok_button(driver=driver, xpath='/html/body/div[9]/div[4]/div/button')
+    download_function(driver)
+    time.sleep(995)
+    # close the browser
+    driver.quit()
+
+    print('Finished ...')
