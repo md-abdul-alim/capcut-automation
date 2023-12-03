@@ -289,6 +289,22 @@ def download_function(driver):
     WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, constant.DOWNLOAD_BUTTON))).click()
     time.sleep(3)
     WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, constant.CONFIRM_EXPORT_BUTTON))).click()
+    #----------------------
+
+    # Wait until the Download button is present
+    WebDriverWait(driver, 120).until(
+        EC.presence_of_element_located((By.CLASS_NAME, "downloadButton"))
+    ).click()
+    time.sleep(5)
+    print("Download button clicked!")
+    # WebDriverWait(driver, 20).until(
+    #     EC.presence_of_element_located((By.CLASS_NAME, "lv_share_export-container-header-right"))
+    # ).click()
+    # time.sleep(5)
+    # WebDriverWait(driver, 20).until(
+    #     EC.presence_of_element_located((By.CLASS_NAME, "lv-btn-shape-square"))
+    # ).click()
+    
 #-------------------------Login Start-------------------
 
 #-------------------------Login End-------------------
@@ -358,25 +374,35 @@ def main():
     start_login(driver)
     #-------------Login End-----------
     skip_click(driver)
+
     ok_button(driver=driver, xpath=constant.POPUP_XPATH)
 
-    element, filter_pixel, number_of_filter = video_length_pixel_calculation(driver)
+    # get all video title list
+    parent_div = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test-id="virtuoso-item-list"]'))
+    )
+    elements = parent_div.find_elements(By.CLASS_NAME, 'card-item-label')
+    data_list = [element.text for element in elements]
+    print(data_list)
 
-    # scroll down for filter
+    element, filter_pixel, number_of_filter = video_length_pixel_calculation(driver) # Select Video
+
     open_filter_and_search(driver)
+
     horizontal_scroll_movement(driver, element, filter_pixel, number_of_filter)
 
     WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[8]/div/button"))).click()
 
     ok_button(driver=driver, xpath=constant.POPUP_XPATH)
-    #-------------------------Basic input Start-------------------
+
     basic_effect(driver)
-    #-------------------------Basic input End---------------------
-    #-------------------------Smart Tools input Start-------------
+
     smart_tools_body_effect(driver)
-    #-------------------------Smart Tools input End---------------
+
     ok_button(driver=driver, xpath='/html/body/div[9]/div[4]/div/button')
+
     download_function(driver)
+
     time.sleep(995)
     # close the browser
     driver.quit()
