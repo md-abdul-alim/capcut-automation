@@ -326,6 +326,8 @@ def horizontal_scroll_movement(driver, element, filter_pixel):
         # ActionChains(driver).click_and_hold(element).move_by_offset(constant.FOR_1200_WIDTH_VIDEO_BAR, 0).release().perform()
         ActionChains(driver).click_and_hold(element).move_by_offset(filter_pixel, 0).release().perform()
         time.sleep(1)
+    # moving cursor to start
+    ActionChains(driver).click_and_hold(element).move_by_offset(-(constant.FOR_1200_WIDTH_VIDEO_BAR + 100), 0).release().perform()
 
 
 
@@ -359,8 +361,6 @@ if __name__ == "__main__":
     time.sleep(5)
     horizontal_scroll_movement(driver, element, filter_pixel)
 
-    # moving cursor to start
-    ActionChains(driver).click_and_hold(element).move_by_offset(-(constant.FOR_1200_WIDTH_VIDEO_BAR + 100), 0).release().perform()
     # ---------------------------------
     time.sleep(10)
     WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[8]/div/button"))).click()
