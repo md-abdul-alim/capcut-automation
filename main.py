@@ -245,7 +245,6 @@ def basic_effect(driver):
 
 def smart_tools_body_effect(driver):
     print('Scroll the time you want to use body shape effect: ')
-    # time.sleep(15)
     time.sleep(2)
     WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.SMART_TOOLS_XPATH))).click()
     time.sleep(2)
@@ -289,32 +288,11 @@ def download_function(driver):
     WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, constant.DOWNLOAD_BUTTON))).click()
     time.sleep(3)
     WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, constant.CONFIRM_EXPORT_BUTTON))).click()
-    #----------------------
 
-    # Wait until the Download button is present
-    WebDriverWait(driver, 120).until(
-        EC.presence_of_element_located((By.CLASS_NAME, "downloadButton"))
-    ).click()
-    time.sleep(5)
+    WebDriverWait(driver, 180).until(EC.presence_of_element_located((By.CLASS_NAME, "downloadButton"))).click()
+    time.sleep(3)
     print("Download button clicked!")
-    driver.switch_to.window(driver.window_handles[0])
-    WebDriverWait(driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, "/html/body/div[12]/div[2]/div/div/div[1]/div[2]/svg[2]"))
-    ).click()
-    # Click on the second <svg> element (index 1, as indexing starts from 0)
-    # svg_elements[1].click()
-    print("Download button closed!")
-    time.sleep(5)
-    WebDriverWait(driver, 20).until(
-        EC.presence_of_element_located((By.CLASS_NAME, "lv-btn-shape-square"))
-    ).click()
-    
-#-------------------------Login Start-------------------
 
-#-------------------------Login End-------------------
-
-
-# -------------
 def video_length_pixel_calculation(driver):
     WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "player-time")))
     video_length_text = driver.find_element(By.CLASS_NAME, "player-time").text.strip().split("\n")[-1]
@@ -331,8 +309,8 @@ def video_length_pixel_calculation(driver):
     return element, filter_pixel, number_of_filter
 
 def horizontal_scroll_movement(driver, element, filter_pixel, number_of_filter):
-    # for i in range(0, number_of_filter + 1):
-    for i in range(0, 1):
+    for i in range(0, number_of_filter + 1):
+    # for i in range(0, 1):
         # for i in range(0, 1):
         text_element = WebDriverWait(driver, 30).until(
             EC.presence_of_element_located((By.XPATH, f"//*[text()='{constant.FILTER_NAME}']")))
@@ -382,32 +360,57 @@ def main():
     ok_button(driver=driver, xpath=constant.POPUP_XPATH)
 
     # get all video title list
-    parent_div = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test-id="virtuoso-item-list"]'))
-    )
+    parent_div = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test-id="virtuoso-item-list"]')))
     elements = parent_div.find_elements(By.CLASS_NAME, 'card-item-label')
-    data_list = [element.text for element in elements]
-    print(data_list)
+    video_list = [element.text for element in elements]
+    print(video_list, len(video_list))
 
-    element, filter_pixel, number_of_filter = video_length_pixel_calculation(driver) # Select Video
+    for i in range(0, len(video_list)):
+        print("Start editing video -> ", video_list[i])
+        driver.get(constant.DASHBOARD_URL)
+        time.sleep(5)
+        parent_div = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test-id="virtuoso-item-list"]')))
 
-    open_filter_and_search(driver)
+        elements = parent_div.find_elements(By.CLASS_NAME, 'card-item-label')
+        # time.sleep(5000)
+        # target_text = '202312041703.mp4'
 
-    horizontal_scroll_movement(driver, element, filter_pixel, number_of_filter)
+        # Find the element with the specified card-item-label text
+        target_element = driver.find_element(By.XPATH, f"//div[@class='card-item-label' and text()='{video_list[i]}']")
+        print("Targeted element search done--------------------------")
+        # Find the immediate following cover-placeholder element
+        x = f"//div[@class='card-item-label' and text()='{video_list[i]}']"
 
-    WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[8]/div/button"))).click()
+        cover_placeholder_element = target_element.find_element(By.XPATH, ".//following::div[@class='cover-placeholder']")
+        # cover_placeholder_element = WebDriverWait(driver, 10).until(
+        #     EC.element_to_be_clickable((By.XPATH, f"{x}/following::div[@class='cover-wrapper']/div[@class='cover-placeholder']"))
+        # )
+        cover_placeholder_element.click()
+        print("Targeted video click done--------------------------")
 
-    ok_button(driver=driver, xpath=constant.POPUP_XPATH)
+        # WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "cover-placeholder"))).click()
 
-    basic_effect(driver)
+        time.sleep(5)
+        element, filter_pixel, number_of_filter = video_length_pixel_calculation(driver) # Select Video
 
-    smart_tools_body_effect(driver)
+        open_filter_and_search(driver)
 
-    ok_button(driver=driver, xpath='/html/body/div[9]/div[4]/div/button')
+        horizontal_scroll_movement(driver, element, filter_pixel, number_of_filter)
 
-    download_function(driver)
+        WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[8]/div/button"))).click()
 
-    time.sleep(995)
+        ok_button(driver=driver, xpath=constant.POPUP_XPATH)
+
+
+        basic_effect(driver)
+
+        smart_tools_body_effect(driver)
+
+        ok_button(driver=driver, xpath='/html/body/div[9]/div[4]/div/button')
+
+        download_function(driver)
+
+    time.sleep(9)
     # close the browser
     driver.quit()
 
