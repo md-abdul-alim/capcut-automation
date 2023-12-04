@@ -297,13 +297,17 @@ def download_function(driver):
     ).click()
     time.sleep(5)
     print("Download button clicked!")
-    # WebDriverWait(driver, 20).until(
-    #     EC.presence_of_element_located((By.CLASS_NAME, "lv_share_export-container-header-right"))
-    # ).click()
-    # time.sleep(5)
-    # WebDriverWait(driver, 20).until(
-    #     EC.presence_of_element_located((By.CLASS_NAME, "lv-btn-shape-square"))
-    # ).click()
+    driver.switch_to.window(driver.window_handles[0])
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, "/html/body/div[12]/div[2]/div/div/div[1]/div[2]/svg[2]"))
+    ).click()
+    # Click on the second <svg> element (index 1, as indexing starts from 0)
+    # svg_elements[1].click()
+    print("Download button closed!")
+    time.sleep(5)
+    WebDriverWait(driver, 20).until(
+        EC.presence_of_element_located((By.CLASS_NAME, "lv-btn-shape-square"))
+    ).click()
     
 #-------------------------Login Start-------------------
 
@@ -327,8 +331,8 @@ def video_length_pixel_calculation(driver):
     return element, filter_pixel, number_of_filter
 
 def horizontal_scroll_movement(driver, element, filter_pixel, number_of_filter):
-    for i in range(0, number_of_filter + 1):
-    # for i in range(0, 1):
+    # for i in range(0, number_of_filter + 1):
+    for i in range(0, 1):
         # for i in range(0, 1):
         text_element = WebDriverWait(driver, 30).until(
             EC.presence_of_element_located((By.XPATH, f"//*[text()='{constant.FILTER_NAME}']")))
