@@ -296,11 +296,13 @@ def download_function(driver):
 
 def video_length_pixel_calculation(driver):
     WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "player-time")))
+    time.sleep(1)
     video_length_text = driver.find_element(By.CLASS_NAME, "player-time").text.strip().split("\n")[-1]
     print("video_length_text: ", video_length_text)
     video_length = round(text_to_seconds(video_length_text))
     print("video_length: ", video_length)
     WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "timeline-play-cursor-hd")))
+    time.sleep(1)
     element = driver.find_element(By.CLASS_NAME, "timeline-play-cursor-hd")
     filter_pixel = (constant.FOR_1200_WIDTH_VIDEO_BAR / video_length) * 3
     print("filter_pixel: ", filter_pixel)
@@ -378,7 +380,8 @@ def main():
         target_element = driver.find_element(By.XPATH, f"//div[@class='card-item-label' and text()='{video_list[i]}']")
         print("Targeted element search done--------------------------")
         # Find the immediate following cover-placeholder element
-        cover_placeholder_element = target_element.find_element(By.XPATH, ".//following::div[@class='cover-placeholder']")
+
+        cover_placeholder_element = target_element.find_element(By.XPATH, "..//following::div[@class='cover-placeholder']")
 
         cover_placeholder_element.click()
         print("Targeted video click done--------------------------")
