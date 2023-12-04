@@ -13,6 +13,7 @@ from pydantic import BaseModel
 import time
 import constant
 import input
+import filter_types
 
 def get_options():
     headers = {
@@ -113,7 +114,7 @@ def text_to_seconds(time_text):
     else:
         return None
     
-def open_filter_and_search(driver):
+def open_filter_and_search(driver, filter_name):
     time.sleep(3)
     WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "lv-tabs-down-icon"))).click()
     print("scroll working.........")
@@ -125,12 +126,12 @@ def open_filter_and_search(driver):
         WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.FILTER_TYPE_EXPAND_XPATH))).click()
         print('filter type expand')
         time.sleep(2)
-        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.FILTER_DICT_WITH_EXPAND[constant.FILTER_TYPE]))).click()
+        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.FILTER_DICT_WITH_EXPAND[filter_types.FILTER_TYPES[filter_name]]))).click()
         print('filter type clicked')
         time.sleep(7)
     except Exception as e:
         print('except block')
-        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.FILTER_DICT_WITHOUT_EXPAND[constant.FILTER_TYPE]))).click()
+        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.FILTER_DICT_WITHOUT_EXPAND[filter_types.FILTER_TYPES[filter_name]]))).click()
         print('filter type clicked')
         time.sleep(7)
 
@@ -311,12 +312,12 @@ def video_length_pixel_calculation(driver):
     number_of_filter = int(constant.FOR_1200_WIDTH_VIDEO_BAR / filter_pixel)
     return element, filter_pixel, number_of_filter
 
-def horizontal_scroll_movement(driver, element, filter_pixel, number_of_filter):
+def horizontal_scroll_movement(driver, element, filter_pixel, number_of_filter, filter_name):
     for i in range(0, number_of_filter + 1):
     # for i in range(0, 1):
         # for i in range(0, 1):
         text_element = WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, f"//*[text()='{constant.FILTER_NAME}']")))
+            EC.presence_of_element_located((By.XPATH, f"//*[text()='{filter_name}']")))
         parent_element = text_element.find_element(By.XPATH, "..")
         parent_element.click()
         print("select filter")
@@ -390,9 +391,11 @@ def main():
         time.sleep(3)
         element, filter_pixel, number_of_filter = video_length_pixel_calculation(driver) # Select Video
 
-        open_filter_and_search(driver)
+        filter_name = constant.FILTER_NAME
 
-        horizontal_scroll_movement(driver, element, filter_pixel, number_of_filter)
+        open_filter_and_search(driver, filter_name)
+
+        horizontal_scroll_movement(driver, element, filter_pixel, number_of_filter, filter_name)
 
         WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[8]/div/button"))).click()
 

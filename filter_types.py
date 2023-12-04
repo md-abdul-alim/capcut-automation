@@ -1,4 +1,4 @@
-{
+FILTER_TYPES = {
   "Badbunny": "Life",
   "Tuileries": "Life",
   "Sardinia": "Life",
@@ -147,5 +147,5 @@
   "Vaporwave": "Style",
   "Cyber light": "Style",
   "Sepia": "Style",
-  "Red": "Style"
+  "Red": "Style"
 }

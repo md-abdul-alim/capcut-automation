@@ -5,7 +5,6 @@ DASHBOARD_URL = "https://www.capcut.com/editor?enter_from=create_new&from_page=w
 
 FILTER_TYPE_EXPAND_XPATH='//*[@id="expandable-tags__list-wrapper"]/div[3]/div'
 
-FILTER_TYPE='Life'
 FILTER_NAME = 'Taro'  # ["Urbanoid", "Badbunny", "Tuileries", "Sardinia", "Taro"]
 FILTER_DICT_WITH_EXPAND = {
     'Life': '//*[@id="expandable-tags__list-wrapper"]/div[2]/div[3]',
