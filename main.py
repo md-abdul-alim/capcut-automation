@@ -114,6 +114,7 @@ def text_to_seconds(time_text):
         return None
     
 def open_filter_and_search(driver):
+    time.sleep(3)
     WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "lv-tabs-down-icon"))).click()
     print("scroll working.........")
     time.sleep(3)
@@ -349,7 +350,7 @@ def skip_click(driver):
         except Exception as e:
             print("Skip button not found: ", e)
 
-        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "cover-placeholder"))).click()
+        # WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.CLASS_NAME, "cover-placeholder"))).click()
 
 def main():
     #------------Login Start------------
@@ -365,32 +366,25 @@ def main():
     video_list = [element.text for element in elements]
     print(video_list, len(video_list))
 
-    for i in range(0, len(video_list)):
-        print("Start editing video -> ", video_list[i])
+    for i in range(0, len(video_list) - 1):
+        print("Start editing video -> ", i, '---',  video_list[i])
         driver.get(constant.DASHBOARD_URL)
         time.sleep(5)
         parent_div = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test-id="virtuoso-item-list"]')))
 
         elements = parent_div.find_elements(By.CLASS_NAME, 'card-item-label')
-        # time.sleep(5000)
-        # target_text = '202312041703.mp4'
 
         # Find the element with the specified card-item-label text
         target_element = driver.find_element(By.XPATH, f"//div[@class='card-item-label' and text()='{video_list[i]}']")
         print("Targeted element search done--------------------------")
         # Find the immediate following cover-placeholder element
-        x = f"//div[@class='card-item-label' and text()='{video_list[i]}']"
-
         cover_placeholder_element = target_element.find_element(By.XPATH, ".//following::div[@class='cover-placeholder']")
-        # cover_placeholder_element = WebDriverWait(driver, 10).until(
-        #     EC.element_to_be_clickable((By.XPATH, f"{x}/following::div[@class='cover-wrapper']/div[@class='cover-placeholder']"))
-        # )
+
         cover_placeholder_element.click()
         print("Targeted video click done--------------------------")
+        ok_button(driver=driver, xpath='/html/body/div[10]/div[4]/div/button')
 
-        # WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "cover-placeholder"))).click()
-
-        time.sleep(5)
+        time.sleep(3)
         element, filter_pixel, number_of_filter = video_length_pixel_calculation(driver) # Select Video
 
         open_filter_and_search(driver)
