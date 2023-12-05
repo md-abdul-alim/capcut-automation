@@ -10,11 +10,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 from pydantic import BaseModel
+from typing import Optional
 import time
 import constant
 import input
 import filter_types
-
+import random
 
 prefs = {
    "download.default_directory": constant.DOWNLOAD_DIRECTORY
@@ -361,12 +362,37 @@ def skip_click(driver):
 
         # WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.CLASS_NAME, "cover-placeholder"))).click()
 
-def main():
-    #------------Login Start------------
-    start_login(driver)
-    #-------------Login End-----------
-    skip_click(driver)
+class Effect(BaseModel):
+    intensity: Optional[int] or random.randint(70, 90)
+    saturation: Optional[int] or random.randrange(-7, 15)
+    temperature: Optional[int] or random.randrange(-7, 15)
+    brightness: Optional[int] or random.randrange(-5, 25)
+    contrast: Optional[int] or random.randrange(-6, 20)
+    shine: Optional[int] or random.randrange(-7, 15)
+    highlight: Optional[int] or random.randrange(-8, 30)
+    shadow: Optional[int] or random.randrange(-5, 25)
+    opacity: Optional[int] or random.randrange(95, 100)
+    scale: Optional[int] or random.randrange(70, 100)
+    position_x: Optional[int] or random.randrange(-7, 7)
+    position_y: Optional[int] or random.randrange(-7, 7)
+    rotate: Optional[int] or random.randrange(-3, 3)
+    sharpness: Optional[int] or random.randrange(0, 100)
+    vignette: Optional[int] or random.randrange(-10, 15)
+    fade: Optional[int] or random.randrange(0, 50)
+    grain: Optional[int] or random.randrange(0, 50)
+    slim: Optional[int] or random.randrange(0, 100)
+    legs: Optional[int] or random.randrange(0, 100)
+    waist: Optional[int] or random.randrange(0, 100)
+    head: Optional[int] or random.randrange(0, 100)
+    smooth: Optional[int] or random.randrange(0, 100)
+    brighten: Optional[int] or random.randrange(0, 100)
 
+
+
+
+def main():
+    start_login(driver)
+    skip_click(driver)
     ok_button(driver=driver, xpath=constant.POPUP_XPATH)
 
     # get all video title list
