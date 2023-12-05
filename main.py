@@ -145,7 +145,7 @@ def basic_effect(driver):
     #------------------
     time.sleep(2)
     WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, constant.BASIC_COLOR_ADJUSTMENT_XPATH))).click()
-    color_saturation_input = WebDriverWait(driver, 30).until(
+    color_saturation_input = WebDriverWait(driver, 40).until(
         EC.presence_of_element_located((By.XPATH, constant.BASIC_COLOR_ADJUSTMENT_COLOR_SATURATION_XPATH)))
     color_saturation_input.send_keys(Keys.CONTROL, 'a')
     color_saturation_input.send_keys(input.BASIC_COLOR_ADJUSTMENT_COLOR_SATURATION)
@@ -368,47 +368,52 @@ def main():
     elements = parent_div.find_elements(By.CLASS_NAME, 'card-item-label')
     video_list = [element.text for element in elements]
     print(video_list, len(video_list))
+    total_video_edit = 0
 
     for i in range(0, len(video_list) - 1):
         print("Start editing video -> ", i, '---',  video_list[i])
-        driver.get(constant.DASHBOARD_URL)
-        time.sleep(5)
-        parent_div = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test-id="virtuoso-item-list"]')))
+        for i in range(0, constant.ONE_TO):
+            print("Duplicate video: ", video_list[i])
+            driver.get(constant.DASHBOARD_URL)
+            time.sleep(2)
+            parent_div = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test-id="virtuoso-item-list"]')))
 
-        elements = parent_div.find_elements(By.CLASS_NAME, 'card-item-label')
+            elements = parent_div.find_elements(By.CLASS_NAME, 'card-item-label')
 
-        # Find the element with the specified card-item-label text
-        target_element = driver.find_element(By.XPATH, f"//div[@class='card-item-label' and text()='{video_list[i]}']")
-        print("Targeted element search done--------------------------")
-        # Find the immediate following cover-placeholder element
+            # Find the element with the specified card-item-label text
+            target_element = driver.find_element(By.XPATH, f"//div[@class='card-item-label' and text()='{video_list[i]}']")
+            print("Targeted element search done--------------------------")
+            # Find the immediate following cover-placeholder element
 
-        cover_placeholder_element = target_element.find_element(By.XPATH, "..//following::div[@class='cover-placeholder']")
+            cover_placeholder_element = target_element.find_element(By.XPATH, "..//following::div[@class='cover-placeholder']")
 
-        cover_placeholder_element.click()
-        print("Targeted video click done--------------------------")
-        ok_button(driver=driver, xpath='/html/body/div[10]/div[4]/div/button')
+            cover_placeholder_element.click()
+            print("Targeted video click done--------------------------")
+            ok_button(driver=driver, xpath='/html/body/div[10]/div[4]/div/button')
 
-        time.sleep(3)
-        element, filter_pixel, number_of_filter = video_length_pixel_calculation(driver) # Select Video
+            time.sleep(3)
+            element, filter_pixel, number_of_filter = video_length_pixel_calculation(driver) # Select Video
 
-        filter_name = constant.FILTER_NAME
+            filter_name = constant.FILTER_NAME
 
-        open_filter_and_search(driver, filter_name)
+            open_filter_and_search(driver, filter_name)
 
-        horizontal_scroll_movement(driver, element, filter_pixel, number_of_filter, filter_name)
+            horizontal_scroll_movement(driver, element, filter_pixel, number_of_filter, filter_name)
 
-        WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[8]/div/button"))).click()
+            WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[8]/div/button"))).click()
 
-        ok_button(driver=driver, xpath=constant.POPUP_XPATH)
+            ok_button(driver=driver, xpath=constant.POPUP_XPATH)
 
 
-        basic_effect(driver)
+            basic_effect(driver)
 
-        smart_tools_body_effect(driver)
+            smart_tools_body_effect(driver)
 
-        ok_button(driver=driver, xpath='/html/body/div[9]/div[4]/div/button')
+            ok_button(driver=driver, xpath='/html/body/div[9]/div[4]/div/button')
 
-        download_function(driver)
+            download_function(driver)
+            total_video_edit +=1
+            print('total_video_edit: ', total_video_edit)
 
     time.sleep(9)
     # close the browser

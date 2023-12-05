@@ -4,7 +4,7 @@ LOGIN_PASSWORD = "adminmilon"
 DASHBOARD_URL = "https://www.capcut.com/editor?enter_from=create_new&from_page=work_space&__action_from=my_draft&position=my_draft&scenario=tiktok_ads&scale=9%3A16"
 
 FILTER_TYPE_EXPAND_XPATH='//*[@id="expandable-tags__list-wrapper"]/div[3]/div'
-
+ONE_TO=3
 FILTER_NAME = 'Taro'  # ["Urbanoid", "Badbunny", "Tuileries", "Sardinia", "Taro"]
 FILTER_DICT_WITH_EXPAND = {
     'Life': '//*[@id="expandable-tags__list-wrapper"]/div[2]/div[3]',
