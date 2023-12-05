@@ -2,7 +2,7 @@ LOGIN_URL = 'https://www.capcut.com/login'
 LOGIN_EMAIL = "alim.abdul.5915@gmail.com"
 LOGIN_PASSWORD = "adminmilon"
 DASHBOARD_URL = "https://www.capcut.com/editor?enter_from=create_new&from_page=work_space&__action_from=my_draft&position=my_draft&scenario=tiktok_ads&scale=9%3A16"
-
+DOWNLOAD_DIRECTORY='C:\\Users\\User\\Downloads\\capcut-automation\\videos'
 FILTER_TYPE_EXPAND_XPATH='//*[@id="expandable-tags__list-wrapper"]/div[3]/div'
 ONE_TO=3
 FILTER_NAME = 'Taro'  # ["Urbanoid", "Badbunny", "Tuileries", "Sardinia", "Taro"]

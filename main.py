@@ -15,6 +15,11 @@ import constant
 import input
 import filter_types
 
+
+prefs = {
+   "download.default_directory": constant.DOWNLOAD_DIRECTORY
+}
+                                
 def get_options():
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
@@ -33,6 +38,7 @@ def get_options():
     options.add_argument('--disable-blink-features=AutomationControlled')
     options.add_experimental_option("useAutomationExtension", False)
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option("prefs", prefs)
     # # add page load strategy to none
     # options.page_load_strategy = 'none'
 
