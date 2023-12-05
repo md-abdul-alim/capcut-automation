@@ -56,7 +56,7 @@ FILTER_TYPES = {
   "Budapest": "Movies",
   "Dispatch": "Movies",
   "Black Panther": "Movies",
-  "Don't Look Up": "Movies",
+  "Dont Look Up": "Movies",
   "Flipped": "Movies",
   "High Saturation": "Movies",
   "Green Orange": "Movies",
