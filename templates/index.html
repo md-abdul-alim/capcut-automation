@@ -128,31 +128,6 @@
                         <input class="form-check-input" type="checkbox" name="autumn">
                         <label class="form-check-label">Autumn</label>
                     </div>
-                    
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="cold">
-                        <label class="form-check-label">Cold</label>
-                    </div>
-                    
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="tan">
-                        <label class="form-check-label">Tan</label>
-                    </div>
-                    
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="umber">
-                        <label class="form-check-label">Umber</label>
-                    </div>
-                    
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="holiday">
-                        <label class="form-check-label">Holiday</label>
-                    </div>
-                    
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="snack">
-                        <label class="form-check-label">Snack</label>
-                    </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-check">
@@ -262,6 +237,30 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="cold">
+                        <label class="form-check-label">Cold</label>
+                    </div>
+                    
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="tan">
+                        <label class="form-check-label">Tan</label>
+                    </div>
+                    
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="umber">
+                        <label class="form-check-label">Umber</label>
+                    </div>
+                    
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="holiday">
+                        <label class="form-check-label">Holiday</label>
+                    </div>
+                    
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="snack">
+                        <label class="form-check-label">Snack</label>
+                    </div>
+                    <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="december">
                         <label class="form-check-label">December</label>
                     </div>
@@ -330,8 +329,6 @@
                         <input class="form-check-input" type="checkbox" name="fade">
                         <label class="form-check-label">Fade</label>
                     </div>
-                </div>
-                <div class="col-md-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="garden">
                         <label class="form-check-label">Garden</label>
@@ -340,7 +337,8 @@
                         <input class="form-check-input" type="checkbox" name="french">
                         <label class="form-check-label">French</label>
                     </div>
-                    
+                </div>
+                <div class="col-md-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="bake">
                         <label class="form-check-label">Bake</label>
@@ -443,7 +441,6 @@
 
             </div>
             <div class="row mt-3">
-
                 <div class="col-md-6">
                     <label class="form-label">Number of variation:</label>
                     <select class="form-select" name="number_of_variation">
@@ -463,19 +460,19 @@
                         <option value="13">13</option>
                         <option value="14">14</option>
                         <option value="15">15</option>
-
-                        <!-- Add more options as needed -->
                     </select>
                 </div>
 
                 <div class="col-md-6">
-                    <label for="percentage_of_video_cut" class="form-label">Percentage of video cut:</label>
+                    <label for="percentage_of_video_cut" class="form-label" style="margin-bottom: 0px;">Percentage of video cut:</label>
                     <input type="number" class="form-control" id="percentage_of_video_cut" name="percentage_of_video_cut" required>
                 </div>
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Run Script</button>
+        <div style="text-align: center;">
+            <button type="submit" class="btn btn-primary">Run Capcut</button>
+        </div>
     </form>
     {% if result_message %}
     <p class="mt-4">{{ result_message }}</p>

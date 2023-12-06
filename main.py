@@ -37,13 +37,12 @@ async def run_script(request: Request, background_tasks: BackgroundTasks,
                      veggie : bool = Form(False), fling : bool = Form(False), hope : bool = Form(False), freedom : bool = Form(False), barbie : bool = Form(False), oppenheimer : bool = Form(False), 
                      budapest : bool = Form(False), dispatch : bool = Form(False), flipped : bool = Form(False), scent : bool = Form(False), inception : bool = Form(False), 
                      oasis : bool = Form(False), dunkirk : bool = Form(False), woodland : bool = Form(False), maple : bool = Form(False), radiance : bool = Form(False), hawaii : bool = Form(False), 
-                     voyage : bool = Form(False), maldives : bool = Form(False), 
-                     hiking : bool = Form(False), nightfall : bool = Form(False), garden : bool = Form(False), december : bool = Form(False), picnic : bool = Form(False), dusk : bool = Form(False), 
-                     hasselblad : bool = Form(False), fuji : bool = Form(False), shade : bool = Form(False), remote : bool = Form(False), friends : bool = Form(False), miami : bool = Form(False), 
-                     beverly : bool = Form(False), princeton : bool = Form(False), film : bool = Form(False), tunnel : bool = Form(False), fade : bool = Form(False), warlock : bool = Form(False), 
-                     jazz : bool = Form(False), brown : bool = Form(False), weird : bool = Form(False), yandere : bool = Form(False), negative : bool = Form(False), dope : bool = Form(False), 
-                     sunset : bool = Form(False), burgundy : bool = Form(False), ghost : bool = Form(False), pumpkin : bool = Form(False), vaporwave : bool = Form(False), sepia: bool = Form(False), 
-                     red: bool = Form(False)
+                     voyage : bool = Form(False), maldives : bool = Form(False), hiking : bool = Form(False), nightfall : bool = Form(False), garden : bool = Form(False), 
+                     december : bool = Form(False), picnic : bool = Form(False), dusk : bool = Form(False), hasselblad : bool = Form(False), fuji : bool = Form(False), 
+                     shade : bool = Form(False), remote : bool = Form(False), friends : bool = Form(False), miami : bool = Form(False), beverly : bool = Form(False), 
+                     princeton : bool = Form(False), film : bool = Form(False), tunnel : bool = Form(False), fade : bool = Form(False), warlock : bool = Form(False), jazz : bool = Form(False), 
+                     brown : bool = Form(False), weird : bool = Form(False), yandere : bool = Form(False), negative : bool = Form(False), dope : bool = Form(False), sunset : bool = Form(False), 
+                     burgundy : bool = Form(False), ghost : bool = Form(False), pumpkin : bool = Form(False), vaporwave : bool = Form(False), sepia: bool = Form(False), red: bool = Form(False)
                     ):
     
     x = ["badbunny", "tuileries", "sardinia", "berlin", "dolce", "humble", "clear", "copper", "plum", "urbanoid", "robust", "salt", "metal", "gray", "shadow", "taro", "mistletoe", "pine", "gingerbread", "nature", "autumn", "cold", "tan", "umber", "holiday", "snack", "french", "bake", "cuisine", "western", "eclipse", "peach", "cold_brew", "latte", "veggie", "fling", "hope", "freedom", "barbie", "oppenheimer", "budapest", "dispatch", "flipped", "scent", "inception", "oasis", "dunkirk", "woodland", "maple", "radiance", "hawaii", "voyage", "maldives", "hiking", "nightfall", "garden", "december", "picnic", "dusk", "hasselblad", "fuji", "shade", "remote", "friends", "miami", "beverly", "princeton", "film", "tunnel", "fade", "warlock", "jazz", "brown", "weird", "yandere", "negative", "dope", "sunset", "burgundy", "ghost", "pumpkin", "vaporwave", "sepia", "red"]
