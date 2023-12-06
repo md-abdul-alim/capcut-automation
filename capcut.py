@@ -389,9 +389,9 @@ def start_parse(number_of_variation, percentage_of_video_cut, *selected_filters)
     print(video_list, len(video_list))
     total_video_edit = 0
 
-    for i in range(0, len(video_list) - 1):
+    for i in range(0, len(video_list)):
         print("Start editing video -> ", i, '---',  video_list[i])
-        for i in range(0, number_of_variation):
+        for _ in range(0, number_of_variation):
             print("Duplicate video: ", video_list[i])
             driver.get(constant.DASHBOARD_URL)
             time.sleep(2)
@@ -400,11 +400,15 @@ def start_parse(number_of_variation, percentage_of_video_cut, *selected_filters)
             elements = parent_div.find_elements(By.CLASS_NAME, 'card-item-label')
 
             # Find the element with the specified card-item-label text
+
+            print("selected video:", video_list[i])
+
             target_element = driver.find_element(By.XPATH, f"//div[@class='card-item-label' and text()='{video_list[i]}']")
             print("Targeted element search done--------------------------")
             # Find the immediate following cover-placeholder element
 
-            cover_placeholder_element = target_element.find_element(By.XPATH, "..//following::div[@class='cover-placeholder']")
+            # cover_placeholder_element = target_element.find_element(By.XPATH, "..//following::div[@class='cover-placeholder']")
+            cover_placeholder_element = target_element.find_element(By.XPATH, "..")
 
             cover_placeholder_element.click()
             print("Targeted video click done--------------------------")
