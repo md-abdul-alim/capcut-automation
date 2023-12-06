@@ -6,14 +6,14 @@ from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Form, Request, BackgroundTasks, HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
-# from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 from typing import Optional
 
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-output_dir = Path("output")
+output_dir = Path("videos")
 output_dir.mkdir(parents=True, exist_ok=True)
 
 templates = Jinja2Templates(directory="templates")
@@ -45,20 +45,27 @@ async def run_script(request: Request, background_tasks: BackgroundTasks,
                      sunset : bool = Form(False), burgundy : bool = Form(False), ghost : bool = Form(False), pumpkin : bool = Form(False), vaporwave : bool = Form(False), sepia: bool = Form(False), 
                      red: bool = Form(False)
                     ):
+    
+    x = ["badbunny", "tuileries", "sardinia", "berlin", "dolce", "humble", "clear", "copper", "plum", "urbanoid", "robust", "salt", "metal", "gray", "shadow", "taro", "mistletoe", "pine", "gingerbread", "nature", "autumn", "cold", "tan", "umber", "holiday", "snack", "french", "bake", "cuisine", "western", "eclipse", "peach", "cold_brew", "latte", "veggie", "fling", "hope", "freedom", "barbie", "oppenheimer", "budapest", "dispatch", "flipped", "scent", "inception", "oasis", "dunkirk", "woodland", "maple", "radiance", "hawaii", "voyage", "maldives", "hiking", "nightfall", "garden", "december", "picnic", "dusk", "hasselblad", "fuji", "shade", "remote", "friends", "miami", "beverly", "princeton", "film", "tunnel", "fade", "warlock", "jazz", "brown", "weird", "yandere", "negative", "dope", "sunset", "burgundy", "ghost", "pumpkin", "vaporwave", "sepia", "red"]
+
+    y = [badbunny, tuileries, sardinia, berlin, dolce, humble, clear, copper, plum, urbanoid, robust, salt, metal, gray, shadow, taro, mistletoe, pine, gingerbread, nature, autumn, cold, tan, umber, holiday, snack, french, bake, cuisine, western, eclipse, peach, cold_brew, latte, veggie, fling, hope, freedom, barbie, oppenheimer, budapest, dispatch, flipped, scent, inception, oasis, dunkirk, woodland, maple, radiance, hawaii, voyage, maldives, hiking, nightfall, garden, december, picnic, dusk, hasselblad, fuji, shade, remote, friends, miami, beverly, princeton, film, tunnel, fade, warlock, jazz, brown, weird, yandere, negative, dope, sunset, burgundy, ghost, pumpkin, vaporwave, sepia, red]
+
+    selected_filters = [value.capitalize() for value, condition in zip(x, y) if condition]
 
     try:
-        crawler_module = import_module("capcut")
+        # print(number_of_variation, percentage_of_video_cut, selected_filters)
+        crawler_module = import_module("capcut")                                 
         start_parse = crawler_module.start_parse
     except (ImportError, AttributeError) as e:
         logging.error(f"Failed to import capcut.start_parse: {e}")
         raise HTTPException(status_code=500, detail="Failed to import crawler")
 
-    background_tasks.add_task(start_parse, number_of_variation, percentage_of_video_cut)
+    background_tasks.add_task(start_parse, number_of_variation, percentage_of_video_cut, *selected_filters)
 
     result_message = "Scraper is running in the background"
 
     return templates.TemplateResponse("result.html", {"request": request, "result_message": result_message})
 
 
-# scheduler = BackgroundScheduler()
-# scheduler.start()
+scheduler = BackgroundScheduler()
+scheduler.start()

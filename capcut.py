@@ -362,36 +362,8 @@ def skip_click(driver):
 
         # WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.CLASS_NAME, "cover-placeholder"))).click()
 
-class Effect(BaseModel):
-    intensity: Optional[int] or random.randint(70, 90)
-    saturation: Optional[int] or random.randrange(-7, 15)
-    temperature: Optional[int] or random.randrange(-7, 15)
-    brightness: Optional[int] or random.randrange(-5, 25)
-    contrast: Optional[int] or random.randrange(-6, 20)
-    shine: Optional[int] or random.randrange(-7, 15)
-    highlight: Optional[int] or random.randrange(-8, 30)
-    shadow: Optional[int] or random.randrange(-5, 25)
-    opacity: Optional[int] or random.randrange(95, 100)
-    scale: Optional[int] or random.randrange(70, 100)
-    position_x: Optional[int] or random.randrange(-7, 7)
-    position_y: Optional[int] or random.randrange(-7, 7)
-    rotate: Optional[int] or random.randrange(-3, 3)
-    sharpness: Optional[int] or random.randrange(0, 100)
-    vignette: Optional[int] or random.randrange(-10, 15)
-    fade: Optional[int] or random.randrange(0, 50)
-    grain: Optional[int] or random.randrange(0, 50)
-    slim: Optional[int] or random.randrange(0, 100)
-    legs: Optional[int] or random.randrange(0, 100)
-    waist: Optional[int] or random.randrange(0, 100)
-    head: Optional[int] or random.randrange(0, 100)
-    smooth: Optional[int] or random.randrange(0, 100)
-    brighten: Optional[int] or random.randrange(0, 100)
-
-
-
-
-def start_parse(number_of_variation, percentage_of_video_cut, all_filters):
-    
+def start_parse(number_of_variation, percentage_of_video_cut, *selected_filters):
+    print(number_of_variation, percentage_of_video_cut, selected_filters)
     start_login(driver)
     skip_click(driver)
     ok_button(driver=driver, xpath=constant.POPUP_XPATH)
@@ -405,7 +377,7 @@ def start_parse(number_of_variation, percentage_of_video_cut, all_filters):
 
     for i in range(0, len(video_list) - 1):
         print("Start editing video -> ", i, '---',  video_list[i])
-        for i in range(0, constant.ONE_TO):
+        for i in range(0, number_of_variation):
             print("Duplicate video: ", video_list[i])
             driver.get(constant.DASHBOARD_URL)
             time.sleep(2)
@@ -427,11 +399,12 @@ def start_parse(number_of_variation, percentage_of_video_cut, all_filters):
             time.sleep(3)
             element, filter_pixel, number_of_filter = video_length_pixel_calculation(driver) # Select Video
 
-            filter_name = constant.FILTER_NAME
+            select_random_filter = random.choice(list(selected_filters))
+            print('select_random_filter: ', select_random_filter)
 
-            open_filter_and_search(driver, filter_name)
+            open_filter_and_search(driver, select_random_filter)
 
-            horizontal_scroll_movement(driver, element, filter_pixel, number_of_filter, filter_name)
+            horizontal_scroll_movement(driver, element, filter_pixel, number_of_filter, select_random_filter)
 
             WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[8]/div/button"))).click()
 
