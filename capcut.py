@@ -383,6 +383,9 @@ def start_parse(number_of_variation, percentage_of_video_cut, *selected_filters)
     parent_div = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test-id="virtuoso-item-list"]')))
     elements = parent_div.find_elements(By.CLASS_NAME, 'card-item-label')
     video_list = [element.text for element in elements]
+
+    # remove element with all numbers(digit not text) before .
+    video_list = [element for element in video_list if not element.split('.')[0].isdigit()]
     print(video_list, len(video_list))
     total_video_edit = 0
 
