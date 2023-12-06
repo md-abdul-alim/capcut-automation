@@ -52,7 +52,6 @@ async def run_script(request: Request, background_tasks: BackgroundTasks,
     selected_filters = [value.capitalize() for value, condition in zip(x, y) if condition]
 
     try:
-        # print(number_of_variation, percentage_of_video_cut, selected_filters)
         crawler_module = import_module("capcut")                                 
         start_parse = crawler_module.start_parse
     except (ImportError, AttributeError) as e:
