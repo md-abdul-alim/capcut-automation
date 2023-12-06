@@ -17,11 +17,18 @@ import input
 import filter_types
 import random
 
-prefs = {
-   "download.default_directory": constant.DOWNLOAD_DIRECTORY
-}
+
                                 
 def get_options():
+    cwd = os.getcwd()
+    dl_dir = os.path.join(cwd, 'download')
+    if not os.path.exists(dl_dir):
+        os.makedirs(dl_dir)
+
+    prefs = {
+        "download.default_directory": dl_dir,
+    }
+
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
     }
@@ -316,6 +323,10 @@ def video_length_pixel_calculation(driver):
     print("filter_pixel: ", filter_pixel)
     if filter_pixel < 7:
         filter_pixel = 7
+
+    if filter_pixel > 80:
+        filter_pixel = filter_pixel - 15
+
     number_of_filter = int(constant.FOR_1200_WIDTH_VIDEO_BAR / filter_pixel)
     return element, filter_pixel, number_of_filter
 
