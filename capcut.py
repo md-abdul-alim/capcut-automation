@@ -423,7 +423,6 @@ def start_parse(number_of_variation, percentage_of_video_cut, *selected_filters)
             open_filter_and_search(driver, select_random_filter)
 
             horizontal_scroll_movement(driver, element, filter_pixel, number_of_filter, select_random_filter)
-            WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="timeline-container"]/div[1]/div[2]/div[1]/button[4]'))).click()
             WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[8]/div/button"))).click()
 
             ok_button(driver=driver, xpath=constant.POPUP_XPATH)
@@ -432,6 +431,12 @@ def start_parse(number_of_variation, percentage_of_video_cut, *selected_filters)
             basic_effect(driver)
 
             smart_tools_body_effect(driver)
+
+            print("-----------Flip video start-----------")
+            WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="canvas-cover"]/div[2]'))).click()
+
+            WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="timeline-container"]/div[1]/div[2]/div[1]/button[4]'))).click()
+            print("-----------Flip video end-----------")
 
             ok_button(driver=driver, xpath='/html/body/div[9]/div[4]/div/button')
 
