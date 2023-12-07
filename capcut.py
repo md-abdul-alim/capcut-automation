@@ -115,7 +115,7 @@ def ok_button(driver, xpath):
         time.sleep(2)
         print("ok button")
     except Exception as e:
-        print("Ok button error: ", e)
+        print("Ok button error: ")
 
 def text_to_seconds(time_text):
     # Use regular expression to extract hours, minutes, seconds, and milliseconds
@@ -369,7 +369,7 @@ def skip_click(driver):
             skip_button.click()
             time.sleep(2)
         except Exception as e:
-            print("Skip button not found: ", e)
+            print("Skip button not found: ")
 
         # WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.CLASS_NAME, "cover-placeholder"))).click()
 
@@ -427,7 +427,6 @@ def start_parse(number_of_variation, percentage_of_video_cut, *selected_filters)
 
             ok_button(driver=driver, xpath=constant.POPUP_XPATH)
 
-
             basic_effect(driver)
 
             smart_tools_body_effect(driver)
@@ -437,6 +436,15 @@ def start_parse(number_of_variation, percentage_of_video_cut, *selected_filters)
 
             WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="timeline-container"]/div[1]/div[2]/div[1]/button[4]'))).click()
             print("-----------Flip video end-----------")
+            keep_percentage = 100 - percentage_of_video_cut
+            keep_pixel = (constant.FOR_1200_WIDTH_VIDEO_BAR / 100) * keep_percentage
+            print("keep_pixel: ", keep_pixel)
+
+            ActionChains(driver).click_and_hold(element).move_by_offset(keep_pixel, 0).release().perform()
+            print("----video trimer moved---")
+            WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="timeline-container"]/div[1]/div[2]/div[1]/button[1]'))).click()
+            print("----video splited---")
+            time.sleep(1000)
 
             ok_button(driver=driver, xpath='/html/body/div[9]/div[4]/div/button')
 

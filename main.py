@@ -13,11 +13,7 @@ app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-output_dir = Path("videos")
-output_dir.mkdir(parents=True, exist_ok=True)
-
 templates = Jinja2Templates(directory="templates")
-
 
 @app.get("/")
 def read_root(request: Request):
