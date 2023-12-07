@@ -9,8 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
-from pydantic import BaseModel
-from typing import Optional
+from moviepy.video.io.VideoFileClip import VideoFileClip
 import time
 import constant
 import input
@@ -22,8 +21,12 @@ import random
 def get_options():
     cwd = os.getcwd()
     dl_dir = os.path.join(cwd, 'download')
+    tr_dir = os.path.join(cwd, 'final_download_video')
     if not os.path.exists(dl_dir):
         os.makedirs(dl_dir)
+
+    if not os.path.exists(tr_dir):
+        os.makedirs(tr_dir)
 
     prefs = {
         "download.default_directory": dl_dir,
@@ -300,14 +303,18 @@ def smart_tools_body_effect(driver):
 
 def download_function(driver):
     WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, constant.EXPORT_BUTTON))).click()
-    time.sleep(3)
+    time.sleep(2)
     WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, constant.DOWNLOAD_BUTTON))).click()
-    time.sleep(3)
+    time.sleep(2)
+
+    element = WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="form-video_name_input"]')))
+    file_name = element.get_attribute('value')
     WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, constant.CONFIRM_EXPORT_BUTTON))).click()
 
     WebDriverWait(driver, 180).until(EC.presence_of_element_located((By.CLASS_NAME, "downloadButton"))).click()
     time.sleep(3)
     print("Download button clicked!")
+    return file_name
 
 def video_length_pixel_calculation(driver):
     WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "player-time")))
@@ -373,6 +380,24 @@ def skip_click(driver):
 
         # WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.CLASS_NAME, "cover-placeholder"))).click()
 
+
+def trim_video(input_path, output_path, trim_percentage):
+    # Load the video clip
+    video_clip = VideoFileClip(input_path)
+
+    # Calculate the duration to trim
+    total_duration = video_clip.duration
+    trim_duration = total_duration * (trim_percentage / 100.0)
+
+    # Trim the video
+    trimmed_clip = video_clip.subclip(0, total_duration - trim_duration)
+
+    # Write the trimmed video to the output file
+    trimmed_clip.write_videofile(output_path, codec="libx264", audio_codec="aac")
+    # Close the video clip
+    video_clip.close()
+
+
 def start_parse(number_of_variation, percentage_of_video_cut, *selected_filters):
     print(number_of_variation, percentage_of_video_cut, selected_filters)
     start_login(driver)
@@ -436,19 +461,29 @@ def start_parse(number_of_variation, percentage_of_video_cut, *selected_filters)
 
             WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="timeline-container"]/div[1]/div[2]/div[1]/button[4]'))).click()
             print("-----------Flip video end-----------")
-            keep_percentage = 100 - percentage_of_video_cut
-            keep_pixel = (constant.FOR_1200_WIDTH_VIDEO_BAR / 100) * keep_percentage
-            print("keep_pixel: ", keep_pixel)
+            # keep_percentage = 100 - percentage_of_video_cut
+            # keep_pixel = (constant.FOR_1200_WIDTH_VIDEO_BAR / 100) * keep_percentage
+            # print("keep_pixel: ", keep_pixel)
 
-            ActionChains(driver).click_and_hold(element).move_by_offset(keep_pixel, 0).release().perform()
-            print("----video trimer moved---")
-            WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="timeline-container"]/div[1]/div[2]/div[1]/button[1]'))).click()
-            print("----video splited---")
-            time.sleep(1000)
+            # ActionChains(driver).click_and_hold(element).move_by_offset(keep_pixel, 0).release().perform()
+            # print("----video trimer moved---")
+            # WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="timeline-container"]/div[1]/div[2]/div[1]/button[1]'))).click()
+            # print("----video splited---")
+            # time.sleep(1000)
 
             ok_button(driver=driver, xpath='/html/body/div[9]/div[4]/div/button')
+            time.sleep(2)
+            file_name = download_function(driver)
 
-            download_function(driver)
+            t = f'{file_name}.mp4'
+            # input_video_path = f"download\\{t}"
+            input_video_path = os.path.abspath(os.path.join("download", t))
+
+            # output_video_path = f"trimed_video\\{t}"
+            output_video_path = os.path.abspath(os.path.join("final_download_video", t))
+
+            trim_video(input_video_path, output_video_path, int(percentage_of_video_cut))
+            print("video trim done.")
             total_video_edit +=1
             print('total_video_edit: ', total_video_edit)
 

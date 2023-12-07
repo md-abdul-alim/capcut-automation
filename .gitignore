@@ -163,3 +163,5 @@ chromedriver
 videos
 output
 download
+cookies.json
+final_download_video
