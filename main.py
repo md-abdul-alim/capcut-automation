@@ -23,7 +23,6 @@ def read_root(request: Request):
 @app.post("/run_script/")
 async def run_script(request: Request, background_tasks: BackgroundTasks, 
                      number_of_variation: Optional[int] = Form(None),
-                     percentage_of_video_cut: Optional[int] = Form(None),
                      badbunny: bool = Form(False), tuileries: bool = Form(False), sardinia: bool = Form(False), berlin: bool = Form(False), dolce: bool = Form(False), humble: bool = Form(False), 
                      clear: bool = Form(False), copper: bool = Form(False), plum: bool = Form(False), urbanoid: bool = Form(False), robust: bool = Form(False), 
                      salt: bool = Form(False), metal: bool = Form(False), gray: bool = Form(False), shadow: bool = Form(False), taro: bool = Form(False), mistletoe: bool = Form(False), 
@@ -54,7 +53,7 @@ async def run_script(request: Request, background_tasks: BackgroundTasks,
         logging.error(f"Failed to import capcut.start_parse: {e}")
         raise HTTPException(status_code=500, detail="Failed to import crawler")
 
-    background_tasks.add_task(start_parse, number_of_variation, percentage_of_video_cut, *selected_filters)
+    background_tasks.add_task(start_parse, number_of_variation, *selected_filters)
 
     result_message = "Scraper is running in the background"
 

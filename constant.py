@@ -1,6 +1,6 @@
 LOGIN_URL = 'https://www.capcut.com/login'
-LOGIN_EMAIL = "write your email"
-LOGIN_PASSWORD = "write your password"
+LOGIN_EMAIL = "alim.abdul.5915@gmail.com"
+LOGIN_PASSWORD = "adminmilon"
 DASHBOARD_URL = "https://www.capcut.com/editor?enter_from=create_new&from_page=work_space&__action_from=my_draft&position=my_draft&scenario=tiktok_ads&scale=9%3A16"
 FILTER_TYPE_EXPAND_XPATH='//*[@id="expandable-tags__list-wrapper"]/div[3]/div'
 
@@ -14,6 +14,18 @@ FILTER_DICT_WITH_EXPAND = {
     'Mono': '//*[@id="expandable-tags__list-wrapper"]/div[2]/div[9]',
     'Style': '//*[@id="expandable-tags__list-wrapper"]/div[2]/div[10]',
 }
+
+# FILTER_DICT_WITH_EXPAND = {
+#     'Life': "//*[text()='Life']",
+#     'Food': "//*[text()='Food']",
+#     'Movies': "//*[text()='Movies']",
+#     'Night Scene': "//*[text()='Night Scene']",
+#     'Scenery': "//*[text()='Scenery']",
+#     'Retro': "//*[text()='Retro']",
+#     'Mono': "//*[text()='Mono']",
+#     'Style': "//*[text()='Style']",
+# }
+
 
 FILTER_DICT_WITHOUT_EXPAND = {
     'Life': '//*[@id="lv-tabs-2-panel-0"]/div/div/div[1]/div/div/div[1]/div/div[2]/div[2]',

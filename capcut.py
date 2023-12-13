@@ -56,7 +56,10 @@ def get_options():
 
 
 def config_driver():
+    """ChromeDriverManager().install()"""
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=get_options())
+    # driver = webdriver.Chrome(service=ChromeService("C:\Users\Administrator\.wdm\drivers\chromedriver\win64\119.0.6045.105\chromedriver-win32\chromedriver.exe"))
+    # driver = webdriver.Chrome(ChromeDriverManager().install(), options=get_options())
     return driver
 
 
@@ -90,23 +93,25 @@ def login(driver):
     try:
         print('Please Login the the website')
 
+        try:
+            wait = WebDriverWait(driver, 15)
+            cookie_acp = wait.until(EC.presence_of_element_located((By.XPATH, "//*[text()='Accept all']")))
+            cookie_acp.click()
+        except:
+            pass
+
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "signUsername"))).send_keys(
             constant.LOGIN_EMAIL)
-
-        wait = WebDriverWait(driver, 5)
-        continue_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "lv-btn-primary")))
-        continue_button.click()
-        time.sleep(5)
-        # -------------
-        WebDriverWait(driver, 5).until(
+        continue_btn = driver.find_element(By.CLASS_NAME, "lv_sign_in_panel_wide-primary-button")
+        continue_btn.click()
+        WebDriverWait(driver, 15).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="password"]'))).send_keys(
             constant.LOGIN_PASSWORD)
-        time.sleep(3)
         # -------------
-        sign_in_button = wait.until(
+        sign_in_button =  WebDriverWait(driver, 15).until(
             EC.presence_of_element_located((By.CLASS_NAME, "lv_sign_in_panel_wide-primary-button")))
         sign_in_button.click()
-        time.sleep(15)
+        time.sleep(10)
 
         # After successful login save new session cookies ot json file
         saveCookies(driver)
@@ -326,7 +331,7 @@ def smart_tools_body_effect(driver):
 def download_function(driver):
     WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, constant.EXPORT_BUTTON))).click()
     time.sleep(2)
-    WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.XPATH, constant.DOWNLOAD_BUTTON))).click()
+    WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, constant.DOWNLOAD_BUTTON))).click()
     time.sleep(2)
 
     element = WebDriverWait(driver, 50).until(
@@ -363,6 +368,7 @@ def video_length_pixel_calculation(driver):
 
 
 def horizontal_scroll_movement(driver, element, filter_pixel, number_of_filter, filter_name):
+    print("filter name in horizontal scroll: ", filter_name)
     for i in range(0, number_of_filter + 1):
         text_element = WebDriverWait(driver, 30).until(
             EC.presence_of_element_located((By.XPATH, f"//*[text()='{filter_name}']")))
@@ -443,8 +449,8 @@ def trim_video(input_path, output_path, trim_percentage):
     video_clip.close()
 
 
-def start_parse(number_of_variation, percentage_of_video_cut, *selected_filters):
-    print(number_of_variation, percentage_of_video_cut, selected_filters)
+def start_parse(number_of_variation, *selected_filters):
+    print(number_of_variation, selected_filters)
     start_login(driver)
     skip_click(driver)
     ok_button(driver=driver, xpath=constant.POPUP_XPATH)
@@ -521,7 +527,7 @@ def start_parse(number_of_variation, percentage_of_video_cut, *selected_filters)
             input_video_path = os.path.abspath(os.path.join("download", t))
             output_video_path = os.path.abspath(os.path.join("final_download_video", t))
 
-            trim_video(input_video_path, output_video_path, int(percentage_of_video_cut))
+            trim_video(input_video_path, output_video_path, input.PERCENTAGE_OF_VIDEO_CUT)
             print("video trim done.")
             total_video_edit += 1
             print('total_video_edit: ', total_video_edit)
@@ -532,4 +538,4 @@ def start_parse(number_of_variation, percentage_of_video_cut, *selected_filters)
 
     print('Finished ...')
 
-# start_parse()
+# start_parse(1, 1, ["berlin"])
